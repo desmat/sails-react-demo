@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+	<title>React Starter Component</title>
+	<style>
+a {text-decoration: none;}
+a.selected {font-weight: bold;}
+	</style>
+
+
+</head>
+<body>
+	loading...
+
+	<script src="/js/dependencies/standalone/JSXTransformer.js"></script>
+	<script src="/js/dependencies/standalone/react.js"></script>
+	<script src="/js/dependencies/standalone/react-dom.js"></script>
+	<script src="/js/dependencies/standalone/ReactRouter.js"></script>
+
+	<script type="text/jsx">
+
+
+
+
+
+
+
+var Router = ReactRouter.Router, 
+	Route = ReactRouter.Route, 
+	Link = ReactRouter.Link, 
+	IndexRoute = ReactRouter.IndexRoute;
+
+
+const Index = React.createClass({
+  render() {
+    return (
+      <div>
+        <i>Routing demo: click on a link above and be mesmerized by the awesome!</i>
+      </div>
+    )
+  }
+});
+
+const Foo = React.createClass({
+  render() {
+    return (
+      <div>
+        <h2>Foo</h2>
+      </div>
+    )
+  }
+});
+
+const Bar = React.createClass({
+  render() {
+    return (
+      <div>
+        <h2>Bar</h2>
+        {this.props.children}        
+      </div>
+    )
+  }
+});
+
+const Car = React.createClass({
+  render() {
+    return (
+      <div>
+        <h3>Car</h3>
+        {this.props.children}        
+      </div>
+    )
+  }
+});
+
+const Dar = React.createClass({
+  render() {
+    return (
+      <div>
+        <h3>Dar</h3>
+        {this.props.children}        
+      </div>
+    )
+  }
+});
+
+const App = React.createClass({
+
+  render() {
+    return (
+      <div>
+      	<h1><Link to="/">App</Link></h1>
+      	<ul>
+      		<li><Link to="foo" activeClassName="selected">Foo</Link></li>
+      		<li><Link to="bar" activeClassName="selected">Bar</Link>
+		      	<ul>
+		      		<li><Link to="bar/car" activeClassName="selected">Car</Link></li>
+		      		<li><Link to="bar/Dar" activeClassName="selected">Dar</Link></li>
+		      	</ul>
+      		</li>
+      	</ul>
+        {this.props.children}
+      </div>
+    )
+  }
+});	
+
+React.render((
+  <Router>
+    <Route path="/" component={App}>
+   	  <IndexRoute component={Index}/>
+      <Route path="foo" component={Foo} />
+      <Route path="bar" component={Bar} >
+      	<Route path="car" component={Car} />
+      	<Route path="dar" component={Dar} />
+  	  </Route>
+    </Route>
+  </Router>
+), document.body);
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

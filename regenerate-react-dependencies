@@ -1,0 +1,1 @@
+browserify -r react -r react-router -r sails-react-store > assets/js/dependencies/build.js
