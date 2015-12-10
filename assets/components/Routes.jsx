@@ -7,8 +7,8 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 const routes = (
     <Route component={require("./Body.jsx")} >
-      <Route path="/" component={require("./Todo.jsx")} />
-      <Route path="done" component={require("./Done.jsx")} />
+      <Route model="Todo" path="/" component={require("./Todo.jsx")} />
+      <Route model="Todo" path="done" component={require("./Done.jsx")} />
       <Route path="about" component={require("./About.jsx")} />
     </Route>
 )

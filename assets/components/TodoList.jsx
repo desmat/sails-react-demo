@@ -101,12 +101,12 @@ const TodoList = React.createClass({
     var self = this;
     Api.get('todo', function(data) { 
       //introduce delay for testing purposes
-      //setTimeout(function() {
+      setTimeout(function() {
         self.setState({data: data}); 
         if (typeof window !== 'undefined' && window.hasOwnProperty('__ReactInitState__')) {
           window['__ReactInitState__'] = {data: data};
         }
-      //, 250);
+      }, 500);
       }
     );
   },

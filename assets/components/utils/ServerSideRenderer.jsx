@@ -14,7 +14,7 @@ var htmlComponent = React.createFactory(require("../Html.jsx"));
 var routes = require("../Routes.jsx");
 
 var serve = function(req, res, next) {
-  // console.log("Rendering " + req.path);
+  console.log("Rendering " + req.path);
 
   var location = createLocation(req.originalUrl);
 
@@ -24,19 +24,44 @@ var serve = function(req, res, next) {
     if (renderProps == null) return next(error);
 
     if (renderProps.components.length > 0 && renderProps.components[0] && (typeof renderProps.components[0] !== 'undefined')) {
-        console.log('rendering component: ' + req.path);
+        // console.log('rendering component: ' + modelName);
 
+        //find a model defined in the routes so that we can load up 
+        var model;
+        _.each(_.filter(renderProps.routes, function(i) {console.dir(i); console.log('-' + i.hasOwnProperty('model')); return i.hasOwnProperty('model');}), function(i) {model = i.model});
+        //console.log('model=' + model);
 
-        //TODO: figure out what data we need to get from back-end and get that specifically (maybe just do a call directly into the api end-points...) 
-        Todo.find({}, function(err, results) {
-          if (err) {
-            //return res.serverError(err);
-            console.log("Error fetching Todo data: " + err);
-            return renderHtml(res, renderProps, []);
-          }
+        var renderHtml = function(data, title, description) {
+          var html = renderToString(htmlComponent({
+            locals: {
+              title:'',
+              description:'', 
+              state: 'window.__ReactInitState__=' + JSON.stringify({data: data}) + ';'
+            },
+            markup: renderToString(<RoutingContext {...renderProps}/>)        
+          }));
+          
+          // console.log(html);
+          return res.send(html);
+        };
 
-          return renderHtml(res, renderProps, results);
-        });
+        if (model == undefined) { 
+          //other than lists don't load up in the back-end
+          return renderHtml([]);
+        }
+        else {
+          //for now just render lists
+          console.log('Fetching data for model ' + model);
+          this[model].find({}, function(err, results) {
+            if (err) {
+              //return res.serverError(err);
+              console.log("Error fetching Todo data: " + err);
+              return renderHtml([]);
+            }
+
+            return renderHtml(results);
+          });
+        }
 
 
 
@@ -63,20 +88,5 @@ var serve = function(req, res, next) {
       }
   });
 };
-
-renderHtml = function(res, renderProps, data, title, description) {
-  var html = renderToString(htmlComponent({
-    locals: {
-      title:'',
-      description:'', 
-      state: 'window.__ReactInitState__=' + JSON.stringify({data: data}) + ';'
-    },
-    markup: renderToString(<RoutingContext {...renderProps}/>)        
-  }));
-  
-  // console.log(html);
-  return res.send(html);
-};
-
 
 module.exports = serve;
