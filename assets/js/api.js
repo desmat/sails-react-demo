@@ -58,13 +58,12 @@ const Api = {
 		console.log('PUT ' + model);
 
 	    $.ajax({
-			url: '/api/' + model + (id ? '/' + id : ''),
+			url: '/api/' + model + '/' + id,
 			dataType: 'json',
 			method: 'PUT',
 			contentType: 'application/json',
 			data: data,
 			cache: false,
-
 			success: function(data) {
 				if (onSuccess) onSuccess(data);
 			},
@@ -77,7 +76,28 @@ const Api = {
 				}
 			}
 	    });
+	},
+       
+	delete(model, id, onSuccess, onError) {
+		console.log('DELETE ' + model);
 
+	    $.ajax({
+			url: '/api/' + model + '/' + id,
+			dataType: 'json',
+			method: 'DELETE',
+			cache: false,
+			success: function(data) {
+				if (onSuccess) onSuccess(data);
+			},
+			error: function(xhr, status, err) {
+				if (onError) {
+					onError(err);
+				}
+				else {
+					console.error(this.props.url, status, err.toString());
+				}
+			}
+	    });
 	},
         
 };

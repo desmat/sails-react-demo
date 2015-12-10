@@ -18,6 +18,7 @@ var Html = React.createClass({
         <body>
             <div id="react-content" dangerouslySetInnerHTML={{__html: this.props.markup}} />
         </body>
+        <script dangerouslySetInnerHTML={{__html: this.props.locals.state}} />
         <script src="/js/dependencies/sails.io.js"></script>
         <script src="/js/dependencies/build.js"></script>
         <script src="/js/bundle.js"></script>

@@ -23,31 +23,60 @@ var serve = function(req, res, next) {
     if (error) return next(error.message);
     if (renderProps == null) return next(error);
 
-    // console.log('matched!');
-    // console.dir(renderProps);
-
     if (renderProps.components.length > 0 && renderProps.components[0] && (typeof renderProps.components[0] !== 'undefined')) {
         console.log('rendering component: ' + req.path);
 
+
+        //TODO: figure out what data we need to get from back-end and get that specifically (maybe just do a call directly into the api end-points...) 
+        Todo.find({}, function(err, results) {
+          if (err) {
+            //return res.serverError(err);
+            console.log("Error fetching Todo data: " + err);
+            return renderHtml(res, renderProps, []);
+          }
+
+          return renderHtml(res, renderProps, results);
+        });
+
+
+
         //mostly ripped off from https://github.com/percolatestudio/percolatestudio.com/blob/master/app/server.js
-        var headParams = {
-        //  title: (nodePackage.title || 'TODO') + (renderProps.routes[1].name ? ": " + renderProps.routes[1].name : ""), 
-        //  description: nodePackage.description || 'TODO'
-        };
+        // var headParams = {
+        // //  title: (nodePackage.title || 'TODO') + (renderProps.routes[1].name ? ": " + renderProps.routes[1].name : ""), 
+        // //  description: nodePackage.description || 'TODO'
+        // };
 
+        // var locals = {title:'',description:''};
+        //     locals.state = 'window.__ReactInitState__=' + JSON.stringify(state) + ';';
 
-        var html = renderToString(htmlComponent({
-          headParams: headParams,
-          markup: renderToString(<RoutingContext {...renderProps}/>)        
-        }));
+        // var html = renderToString(htmlComponent({
+        //   locals: locals,
+        //   markup: renderToString(<RoutingContext {...renderProps}/>)        
+        // }));
         
-        //console.log(html);
-        return res.send(html);
+        // //console.log(html);
+        // return res.send(html);
+
       }
       else {
         return next();
       }
   });
 };
+
+renderHtml = function(res, renderProps, data, title, description) {
+  var html = renderToString(htmlComponent({
+    locals: {
+      title:'',
+      description:'', 
+      state: 'window.__ReactInitState__=' + JSON.stringify({data: data}) + ';'
+    },
+    markup: renderToString(<RoutingContext {...renderProps}/>)        
+  }));
+  
+  // console.log(html);
+  return res.send(html);
+};
+
 
 module.exports = serve;

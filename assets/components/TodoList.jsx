@@ -38,7 +38,12 @@ const TodoList = React.createClass({
       //update locally
       this.setState({data: this.state.data}); 
       //update remotely
-      Api.put('todo', todoItem.id, JSON.stringify(todoItem));
+      if (state == 'deleted') {
+        Api.delete('todo', todoItem.id);
+      }
+      else {
+        Api.put('todo', todoItem.id, JSON.stringify(todoItem));
+      }
     }
   },
 
@@ -81,8 +86,11 @@ const TodoList = React.createClass({
 
 
     if (typeof window !== 'undefined') {
-      if (window.hasOwnProperty('data')) return {data: data};
-
+      if (window.hasOwnProperty('__ReactInitState__')) {
+        console.log('has init state');
+        console.dir(window.__ReactInitState__);
+        return window.__ReactInitState__;
+      }
     }
 
     return {data: []};
@@ -91,7 +99,16 @@ const TodoList = React.createClass({
   componentDidMount() {
     console.log('*** TodoList.componentDidMount');
     var self = this;
-    Api.get('todo', function(data) { self.setState({data: data}); window['data'] = data; });
+    Api.get('todo', function(data) { 
+      //introduce delay for testing purposes
+      //setTimeout(function() {
+        self.setState({data: data}); 
+        if (typeof window !== 'undefined' && window.hasOwnProperty('__ReactInitState__')) {
+          window['__ReactInitState__'] = {data: data};
+        }
+      //, 250);
+      }
+    );
   },
 
   render() {
