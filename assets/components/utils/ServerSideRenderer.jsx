@@ -8,6 +8,7 @@ var match = Router.match;
 var RoutingContext = Router.RoutingContext;
 // var nodePackage = require('./../../package');
 var createLocation = require('history/lib/createLocation');
+var Api = require('../../js/api');
 
 var htmlComponent = React.createFactory(require("../Html.jsx"));
 var routes = require("../Routes.jsx");
@@ -34,11 +35,13 @@ var serve = function(req, res, next) {
         //  description: nodePackage.description || 'TODO'
         };
 
+
         var html = renderToString(htmlComponent({
           headParams: headParams,
-          markup: renderToString(<RoutingContext {...renderProps}/>)
+          markup: renderToString(<RoutingContext {...renderProps}/>)        
         }));
-
+        
+        //console.log(html);
         return res.send(html);
       }
       else {
