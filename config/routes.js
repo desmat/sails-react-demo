@@ -46,6 +46,6 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'get /': 'IndexController.index',
+  // 'get /': 'IndexController.index',
 
 };

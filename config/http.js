@@ -16,10 +16,10 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactDOMServer = require('react-dom/server') ;
 var Router = require("react-router");
-var routes = require("../assets/components/Routes");
+var routes = require("../components/Routes");
 var nodePackage = require('./../package');
 var createLocation = require('history/lib/createLocation');
-var ServerSideRenderer = require('../assets/components/utils/ServerSideRenderer.jsx');
+var ServerSideRenderer = require('../components/utils/ServerSideRenderer.jsx');
 
 module.exports.http = {
 
