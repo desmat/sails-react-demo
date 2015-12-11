@@ -8,7 +8,7 @@ var Body = React.createClass({
     return (
       <div>
       	<Nav/>
-      	<div className='container container-fluid'>
+      	<div className='container-fluid'>
         	{this.props.children}
         </div>
       </div>

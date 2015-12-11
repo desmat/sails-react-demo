@@ -15,6 +15,7 @@ var Html = React.createClass({
           <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0, width=device-width" />
           <link href="/styles/client.css" media="all" rel="stylesheet" />
           <link href="/styles/bootstrap.css" rel="stylesheet" />
+          <link rel="stylesheet" href="/styles/font-awesome.min.css"/>
         </head>
         <body>
           <div id="react-content" dangerouslySetInnerHTML={{__html: this.props.markup}} />

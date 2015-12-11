@@ -27,7 +27,7 @@ const TodoList = React.createClass({
   },
 
   setTodoItemState(id, state) {
-    console.log('setting state [' + state + '] for todo item [' + id + ']');
+    //console.log('setting state [' + state + '] for todo item [' + id + ']');
 
     var todoItem = _.findWhere(this.state.data, {id: id});
     if (typeof todoItem !== 'undefined') {
@@ -46,7 +46,7 @@ const TodoList = React.createClass({
   },
 
   setTodoItemText(id) {
-    console.log('setting text [' + text + '] for todo item [' + id + ']');
+    //console.log('setting text [' + text + '] for todo item [' + id + ']');
 
     var todoItem = _.findWhere(this.state.data, {id: id});
     if (typeof todoItem !== 'undefined') {
@@ -66,13 +66,13 @@ const TodoList = React.createClass({
   },
 
   getInitialState() {
-    console.log('*** TodoList.getInitialState');
+    //console.log('*** TodoList.getInitialState');
 
     return {data: Api.getInitial('todo')};
   },  
 
   componentDidMount() {
-    console.log('*** TodoList.componentDidMount');
+    //console.log('*** TodoList.componentDidMount');
 
     var self = this;
     Api.get('todo', function(data) { 
@@ -102,9 +102,8 @@ const TodoList = React.createClass({
 
     if (this.props.state=='todo') {
       return (
-          <div className="row">
-            {todoItems}
-          </div>
+        <div>
+          {todoItems}
           <br/>
           <div className="text-center">
               <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
