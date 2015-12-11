@@ -6,8 +6,6 @@ var TodoItem = require('./TodoItem.jsx');
 
 var nextNewTodoTempId = -1; //TODO
 
-var BACKEND_DATA = [];
-
 const TodoList = React.createClass({
   addTodoItem() {
     var self = this;
@@ -105,8 +103,13 @@ const TodoList = React.createClass({
     if (this.props.state=='todo') {
       return (
         <div>
-          {todoItems}
-          <div><a href="#" onClick={this.addTodoItem}>add</a></div>
+          <table className="table-condensed table-hover">
+            {todoItems}
+          </table>
+          <br/>
+          <div className="text-center">
+              <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
+          </div>
         </div>
       );
     }
