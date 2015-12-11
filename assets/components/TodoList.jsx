@@ -68,37 +68,20 @@ const TodoList = React.createClass({
   },
 
   getInitialState() {
-    //console.log('*** TodoList.getInitialState');
+    console.log('*** TodoList.getInitialState');
 
-    if (typeof window !== 'undefined') {
-      if (window.hasOwnProperty('__ReactInitState__')) {
-        //console.log('has init state');
-        //console.dir(window.__ReactInitState__);
-        return window.__ReactInitState__;
-      }
-    }
-    else if (typeof global !== 'undefined') {
-      if (global.hasOwnProperty('__ReactInitState__')) {
-        //console.log('has init state');
-        //console.dir(global.__ReactInitState__);
-        return global.__ReactInitState__;
-      }
-    }
-
-    return {data: []};
+    return {data: Api.getInitial('todo')};
   },  
 
   componentDidMount() {
     console.log('*** TodoList.componentDidMount');
+
     var self = this;
     Api.get('todo', function(data) { 
       //introduce delay for testing purposes
-      setTimeout(function() {
+      //setTimeout(function() {
         self.setState({data: data}); 
-        if (typeof window !== 'undefined' && window.hasOwnProperty('__ReactInitState__')) {
-          window['__ReactInitState__'] = {data: data};
-        }
-      }, 500);
+      //}, 500);
       }
     );
   },

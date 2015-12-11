@@ -1,16 +1,18 @@
 var $ = require('jquery');
 
-var cache = [];
-
 const Api = {
 
 	get(model, onSuccess, onError) {
+
 	    $.ajax({
 	      url: '/api/' + model,
 	      dataType: 'json',
 	      cache: false,
 	      success: function(data) {
-	      	cache[model] = data;
+	        if (typeof window !== 'undefined' && window.hasOwnProperty('__ReactInitState__')) {
+	          window['__ReactInitState__'] = data;
+	        }
+
 	        if (onSuccess) onSuccess(data);
 	      },
 	      error: function(xhr, status, err) {
@@ -24,12 +26,24 @@ const Api = {
 	    });
 	},
 
-	getCached(model) {
-		var cached = cache[model];
-		if (cached) return cached;
+	getInitial(model) {
+	    if (typeof window !== 'undefined') {
+	      if (window.hasOwnProperty('__ReactInitState__')) {
+	        //console.log('has init state');
+	        //console.dir(window.__ReactInitState__);
+	        return window.__ReactInitState__;
+	      }
+	    }
+	    else if (typeof global !== 'undefined') {
+	      if (global.hasOwnProperty('__ReactInitState__')) {
+	        //console.log('has init state');
+	        //console.dir(global.__ReactInitState__);
+	        return global.__ReactInitState__;
+	      }
+	    }
 
-		return [];
-	},
+	    return [];
+   	},
 
 	post(model, data, onSuccess, onError) {
 	    $.ajax({

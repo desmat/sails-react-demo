@@ -37,7 +37,7 @@ var serve = function(req, res, next) {
               title:'',
               description:'', 
               // make data available for components' initial state (borrowed from https://github.com/wi2/isomorphic-sails-react-example)
-              state: 'window.__ReactInitState__=' + JSON.stringify({data: data}) + ';'
+              state: 'window.__ReactInitState__=' + JSON.stringify(data) + ';'
             },
             markup: renderToString(<RoutingContext {...renderProps}/>)        
           }));
@@ -55,7 +55,7 @@ var serve = function(req, res, next) {
           //console.log('Fetching data for model ' + model);
           this[model].find({}, function(err, results) {
             // make data available for components to render on the back-end
-            global.__ReactInitState__ = {data: results};
+            global.__ReactInitState__ = results;
 
             if (err) {
               //return res.serverError(err);
