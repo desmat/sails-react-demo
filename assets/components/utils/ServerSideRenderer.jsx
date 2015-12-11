@@ -14,7 +14,7 @@ var htmlComponent = React.createFactory(require("../Html.jsx"));
 var routes = require("../Routes.jsx");
 
 var serve = function(req, res, next) {
-  console.log("Rendering " + req.path);
+  //console.log("Rendering " + req.path);
 
   var location = createLocation(req.originalUrl);
 
@@ -24,11 +24,11 @@ var serve = function(req, res, next) {
     if (renderProps == null) return next(error);
 
     if (renderProps.components.length > 0 && renderProps.components[0] && (typeof renderProps.components[0] !== 'undefined')) {
-        // console.log('rendering component: ' + modelName);
+        console.log('rendering component on path: ' + req.path);
 
         //find a model defined in the routes so that we can load up 
         var model;
-        _.each(_.filter(renderProps.routes, function(i) {console.dir(i); console.log('-' + i.hasOwnProperty('model')); return i.hasOwnProperty('model');}), function(i) {model = i.model});
+        _.each(_.filter(renderProps.routes, function(i) {/*console.dir(i); console.log('-' + i.hasOwnProperty('model'));*/ return i.hasOwnProperty('model');}), function(i) {model = i.model});
         //console.log('model=' + model);
 
         var renderHtml = function(data, title, description) {
@@ -36,6 +36,7 @@ var serve = function(req, res, next) {
             locals: {
               title:'',
               description:'', 
+              // make data available for components' initial state (borrowed from https://github.com/wi2/isomorphic-sails-react-example)
               state: 'window.__ReactInitState__=' + JSON.stringify({data: data}) + ';'
             },
             markup: renderToString(<RoutingContext {...renderProps}/>)        
@@ -51,8 +52,11 @@ var serve = function(req, res, next) {
         }
         else {
           //for now just render lists
-          console.log('Fetching data for model ' + model);
+          //console.log('Fetching data for model ' + model);
           this[model].find({}, function(err, results) {
+            // make data available for components to render on the back-end
+            global.__ReactInitState__ = {data: results};
+
             if (err) {
               //return res.serverError(err);
               console.log("Error fetching Todo data: " + err);

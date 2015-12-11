@@ -68,28 +68,20 @@ const TodoList = React.createClass({
   },
 
   getInitialState() {
-    console.log('*** TodoList.getInitialState');
-    
-    //Api.get('todo', function(data) { self.setState({data: data}); });
-
-    // if (typeof window === 'undefined') {
-    //   console.log('RUNNING IN BACKEND');
-
-      
-    //   var data = Api.getCached('todo');
-    //   console.log('returned with data');
-
-    //   return {data: data};
-    // }
-
-//    console.dir(this.state.data);
-
+    //console.log('*** TodoList.getInitialState');
 
     if (typeof window !== 'undefined') {
       if (window.hasOwnProperty('__ReactInitState__')) {
-        console.log('has init state');
-        console.dir(window.__ReactInitState__);
+        //console.log('has init state');
+        //console.dir(window.__ReactInitState__);
         return window.__ReactInitState__;
+      }
+    }
+    else if (typeof global !== 'undefined') {
+      if (global.hasOwnProperty('__ReactInitState__')) {
+        //console.log('has init state');
+        //console.dir(global.__ReactInitState__);
+        return global.__ReactInitState__;
       }
     }
 
