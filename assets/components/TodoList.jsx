@@ -102,10 +102,9 @@ const TodoList = React.createClass({
 
     if (this.props.state=='todo') {
       return (
-        <div>
-          <table className="table-condensed table-hover">
+          <div className="row">
             {todoItems}
-          </table>
+          </div>
           <br/>
           <div className="text-center">
               <button onClick={this.addTodoItem} className="btn btn-success">Add</button>

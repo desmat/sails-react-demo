@@ -16,10 +16,8 @@ const TodoItem = React.createClass({
   render() {
     if (this.props.state == 'todo') {
       return (
-        <tr>
-          <td width="100%">{this.props.text}</td>
-          <td className="text-nowrap"><button onClick={this.setText} className="btn btn-info">Edit</button> <button onClick={this.setDone} className="btn btn-warning">Done</button></td>
-        </tr>
+          <div className="col-md-8">{this.props.text}</div>
+          <div className="col-md-4"><button onClick={this.setText} className="btn btn-info">Edit</button> <button onClick={this.setDone} className="btn btn-warning">Done</button></div>
       );     
     }
     else if (this.props.state == 'done') {
