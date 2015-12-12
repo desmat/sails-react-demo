@@ -5,10 +5,12 @@ A simple demo app (a to-do list) demostrating isomorphic React served on Node.js
 
 ### Getting Started
 
-git clone XXX
-cd XXX
+```
+git clone git@github.com:desmat/sails-react-demo.git
+cd sails-react-demo
 npm install
 sails lift
+```
 
 ### What is Isomorphic React?
 
@@ -27,8 +29,30 @@ This is achieved by leveraging React's renderToString method and the React route
 2. Define your React Routes normally
 3. At this point the static parts of your components will render on the back-end automatically.
 4. To fully render data-driven components:
-4.1. Define restful api end-points corresponding to the component (sails generate model TheModel)
-4.2. Associate the route with the api end-point (mode='TheModel')
-4.3. Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
+* Define restful api end-points corresponding to the component
+```
+sails generate model Foo
+```
+* Associate the route with the api end-point(s) 
+```
+<Route path="/foo" component={Foo} model="Foo"/>
+	<Route path="/bar" component={Bar} model="Bar"/>
+</Route>	
+```
+* Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
+```
+...
+getInitialState() {
+	return {data: Api.getInitial('Foo')};
+},  
+
+componentDidMount() {
+	Api.get('Foo', function(data) { 
+		/* update front-end state */
+	});
+},
+...
+
+```
 
 That's it!
