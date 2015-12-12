@@ -7,7 +7,7 @@ var Html = React.createClass({
     return (
       <html>
         <head>
-          <title>Simple Todo App</title>
+          <title>Simple To-Do App (Isomorphic React Demo)</title>
           <meta charSet="utf-8" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
           <meta name="description" content="TODO" />

@@ -30,16 +30,16 @@ const Api = {
 	    if (typeof window !== 'undefined') {
 	      if (window.hasOwnProperty('__ReactInitState__') && 
 	      	  window.__ReactInitState__.hasOwnProperty(model)) {
-	        // console.log('has init state');
-	        // console.dir(window.__ReactInitState__[model]);
+	        //console.log('has init state');
+	        //console.dir(window.__ReactInitState__[model]);
 	        return window.__ReactInitState__[model];
 	      }
 	    }
 	    else if (typeof global !== 'undefined') {
 	      if (global.hasOwnProperty('__ReactInitState__') && 
 	      	  global.__ReactInitState__.hasOwnProperty(model)) {
-	        // console.log('has init state');
-	        // console.dir(global.__ReactInitState__[model]);
+	        //console.log('has init state');
+	        //console.dir(global.__ReactInitState__[model]);
 	        return global.__ReactInitState__[model];
 	      }
 	    }

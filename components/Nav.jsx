@@ -14,7 +14,7 @@ var Nav = React.createClass({
 		            <span className="icon-bar"></span>
 		            <span className="icon-bar"></span>
 		          </button>
-		          <Link className="navbar-brand" to="/">Sails React Demo</Link>
+		          <Link className="navbar-brand" to="/">Simple To-Do App (Isomorphic React Demo)</Link>
 		        </div>
 		        <div id="navbar" className="navbar-collapse collapse">
 		          <ul className="nav navbar-nav navbar-right">

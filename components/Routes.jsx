@@ -6,10 +6,10 @@ var Link = Router.Link;
 var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 const routes = (
-    <Route component={require("./Body.jsx")} model="Todo" >
+    <Route component={require("./Body.jsx")} model="Todo, About" >
       <Route path="/" component={require("./Todo.jsx")} />
       <Route path="done" component={require("./Done.jsx")} />
-      <Route path="about" component={require("./About.jsx")} />
+      <Route path="about" component={require("./About.jsx")} model="About" />
     </Route>
 )
 
