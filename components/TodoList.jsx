@@ -92,33 +92,58 @@ const TodoList = React.createClass({
       return self.props.state=='todo' ? collection : collection.reverse();
     }
 
+    var list = sortAscOrDesc(_.sortBy(_.where(this.state.data, {state: this.props.state}), sortByField));
+
     if (this.props.state=='todo') {
-      return (
+      if (list.length == 0) {
+        return (
         <div>
-          {sortAscOrDesc(_.sortBy(_.where(this.state.data, {state: this.props.state}), sortByField)).map(function(todoItem) {
-            return (
-              <TodoItem key={todoItem.id} id={todoItem.id} text={todoItem.text} state={todoItem.state} setState={self.setTodoItemState} setText={self.setTodoItemText} />
-            );
-          })}
+          <i className="text-center">Nothing do to! Press the button below and create new items to do!</i>
 
           <br/>
           <div className="text-center">
               <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
           </div>
         </div>
-      );
+        )
+      }
+      else {
+        return (
+          <div>
+            {list.map(function(todoItem) {
+              return (
+                <TodoItem key={todoItem.id} id={todoItem.id} text={todoItem.text} state={todoItem.state} setState={self.setTodoItemState} setText={self.setTodoItemText} />
+              );
+            })}
+
+            <br/>
+            <div className="text-center">
+                <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
+            </div>
+          </div>
+        );
+      }
     }
     else {
-      return (
+      if (list.length == 0) {
+        return (
         <div>
-          {sortAscOrDesc(_.sortBy(_.where(this.state.data, {state: this.props.state}), sortByField)).map(function(todoItem) {
-            return (
-              <TodoItem key={todoItem.id} id={todoItem.id} text={todoItem.text} state={todoItem.state} setState={self.setTodoItemState} setText={self.setTodoItemText} />
-            );
-          })}
-
+          <i className="text-center">Nothing to see here, move along!</i>
         </div>
-      );
+        )
+      }
+      else {
+        return (
+          <div>
+            {list.map(function(todoItem) {
+              return (
+                <TodoItem key={todoItem.id} id={todoItem.id} text={todoItem.text} state={todoItem.state} setState={self.setTodoItemState} setText={self.setTodoItemText} />
+              );
+            })}
+
+          </div>
+        );
+      }
     }
   }
 });
