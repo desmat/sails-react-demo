@@ -10,7 +10,7 @@ const Api = {
 	      cache: false,
 	      success: function(data) {
 	        if (typeof window !== 'undefined' && window.hasOwnProperty('__ReactInitState__')) {
-	          window['__ReactInitState__'] = data;
+	          window.__ReactInitState__[model] = data;
 	        }
 
 	        if (onSuccess) onSuccess(data);
@@ -20,7 +20,7 @@ const Api = {
 	        	onError(err);
 	        }
 	        else {
-	        	console.error(this.props.url, status, err.toString());
+	        	console.error(model, status, err.toString());
 	        }
 	      }
 	    });
@@ -28,17 +28,19 @@ const Api = {
 
 	getInitial(model) {
 	    if (typeof window !== 'undefined') {
-	      if (window.hasOwnProperty('__ReactInitState__')) {
-	        //console.log('has init state');
-	        //console.dir(window.__ReactInitState__);
-	        return window.__ReactInitState__;
+	      if (window.hasOwnProperty('__ReactInitState__') && 
+	      	  window.__ReactInitState__.hasOwnProperty(model)) {
+	        // console.log('has init state');
+	        // console.dir(window.__ReactInitState__[model]);
+	        return window.__ReactInitState__[model];
 	      }
 	    }
 	    else if (typeof global !== 'undefined') {
-	      if (global.hasOwnProperty('__ReactInitState__')) {
-	        //console.log('has init state');
-	        //console.dir(global.__ReactInitState__);
-	        return global.__ReactInitState__;
+	      if (global.hasOwnProperty('__ReactInitState__') && 
+	      	  global.__ReactInitState__.hasOwnProperty(model)) {
+	        // console.log('has init state');
+	        // console.dir(global.__ReactInitState__[model]);
+	        return global.__ReactInitState__[model];
 	      }
 	    }
 

@@ -13,7 +13,7 @@ module.exports = function(grunt) {
       debug: true
     },    
     js: {
-      src: ['.tmp/public/components/*.jsx', '.tmp/public/components/**/*.jsx'],
+      src: ['./components/*.jsx', './components/**/*.jsx'],
       dest: '.tmp/public/js/bundle.js',
     }, 
   });

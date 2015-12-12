@@ -23,3 +23,7 @@ a.selected {
 /*.btn {
 	padding-top: 1px;
 }*/
+.body-component {
+	padding-left: 15px;
+	padding-right: 15px;
+}
