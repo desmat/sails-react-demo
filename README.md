@@ -28,12 +28,12 @@ This is achieved by leveraging React's renderToString method and the React route
 
 ### How?
 
-To get your basic isomorphism on: 
+Basic isomorphism: 
 
 * Create your React components normally
 * Define your React Routes normally
 
-<strong>At this point the static parts of your components will render on the back-end automatically.</strong> The next steps will allow you to fully render data-driven components:
+<strong>At this point the static parts of your components will render on the back-end automatically.</strong> The next steps will allow you to fully isomorphically render data-driven components:
 
 * Define restful api end-points corresponding to the component
 ```
