@@ -3,7 +3,7 @@ Sails Isomorphic React Demo
 
 A simple demo app (a to-do list) demostrating isomorphic React served on Node.js and Sails.js.
 
-<img src="https://github.com/desmat/sails-react-demo/blob/static/screenshot.png?raw=true" style="border-style: solid; border-width: 1px; border-color: black"></img>
+<img src="https://github.com/desmat/sails-react-demo/blob/static/screenshot.png?raw=true"></img>
 
 
 ### Getting Started
