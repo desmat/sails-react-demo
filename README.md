@@ -33,7 +33,7 @@ This is achieved by leveraging React's renderToString method and the React route
 ```
 sails generate model Foo
 ```
-* Associate the route with the api end-point(s) 
+* Associate the route with the api end-point(s) via the attribute 'model'
 ```
 <Route path="/foo" component={Foo} model="Foo"/>
 	<Route path="/bar" component={Bar} model="Bar"/>
