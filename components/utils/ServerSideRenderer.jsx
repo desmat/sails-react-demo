@@ -27,9 +27,11 @@ var serve = function(req, res, next) {
         console.log('rendering component on path: ' + req.path);
 
         //find a model defined in the routes so that we can load up 
-        var model;
-        _.each(_.filter(renderProps.routes, function(i) {/*console.dir(i); console.log('-' + i.hasOwnProperty('model'));*/ return i.hasOwnProperty('model');}), function(i) {model = i.model});
-        //console.log('model=' + model);
+        var models = [];
+        //_.each(_.filter(renderProps.routes, function(i) {/*console.dir(i); console.log('-' + i.hasOwnProperty('model'));*/ return i.hasOwnProperty('model');}), function(i) {model = i.model});
+        _.each(_.filter(renderProps.routes, function(i) { return i.hasOwnProperty('model');}), function(i) {models.push(i.model});
+        console.log('models');
+        console.dir(model);
 
         var renderHtml = function(data, model, title, description) {
           model = model || '';
@@ -47,7 +49,7 @@ var serve = function(req, res, next) {
           return res.send(html);
         };
 
-        if (model == undefined) { 
+        if (models.length == 0) { 
           //other than lists don't load up in the back-end
           return renderHtml([]);
         }
@@ -55,20 +57,43 @@ var serve = function(req, res, next) {
           //for now just render lists
           //TODO: collect all models and set all of their states to __ReactInitState__
           global.__ReactInitState__ = [];
+
+          _each(models, function(model, i) {
+
+            console.log('fetching data for model [' + model + ']');
+            this[model].find({}, function(err, results) {
+              // make data available for components to render on the back-end
+              global.__ReactInitState__[model] = results;
+
+              if (err) {
+                //return res.serverError(err);
+                console.log("Error fetching Todo data: " + err);
+                //return renderHtml([]);
+              }
+
+              if (i == models.length - 1) {
+                console.log('done fetching data from models; rendering the whole thing');
+                return renderHtml(results, model);
+              }
+            });
+
+
+
+          });
           
           //console.log('Fetching data for model ' + model);
-          this[model].find({}, function(err, results) {
-            // make data available for components to render on the back-end
-            global.__ReactInitState__[model] = results;
+          // this[model].find({}, function(err, results) {
+          //   // make data available for components to render on the back-end
+          //   global.__ReactInitState__[model] = results;
 
-            if (err) {
-              //return res.serverError(err);
-              console.log("Error fetching Todo data: " + err);
-              return renderHtml([]);
-            }
+          //   if (err) {
+          //     //return res.serverError(err);
+          //     console.log("Error fetching Todo data: " + err);
+          //     return renderHtml([]);
+          //   }
 
-            return renderHtml(results, model);
-          });
+          //   return renderHtml(results, model);
+          // });
         }
 
 
