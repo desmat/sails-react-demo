@@ -28,22 +28,24 @@ This is achieved by leveraging React's renderToString method and the React route
 
 ### How?
 
-1. Create your React components normally
-2. Define your React Routes normally
+To get your basic isomorphism on: 
 
-<strong>At this point the static parts of your components will render on the back-end automatically. The next steps will allow you to fully render data-driven components:</strong>
+* Create your React components normally
+* Define your React Routes normally
 
-3. Define restful api end-points corresponding to the component
+<strong>At this point the static parts of your components will render on the back-end automatically.</strong> The next steps will allow you to fully render data-driven components:
+
+* Define restful api end-points corresponding to the component
 ```
 sails generate model Foo
 ```
-4. Associate the route with the api end-point(s) via the attribute 'model'
+* Associate the route with the api end-point(s) via the attribute 'model'
 ```
 <Route path="/foo" component={Foo} model="Foo"/>
 	<Route path="/bar" component={Bar} model="Bar"/>
 </Route>	
 ```
-5. Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
+* Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
 ```
 ...
 getInitialState() {
@@ -59,4 +61,4 @@ componentDidMount() {
 
 ```
 
-<i>That's it!</i>
+<strong>That's it!</strong>
