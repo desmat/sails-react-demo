@@ -62,3 +62,9 @@ componentDidMount() {
 ```
 
 <strong>That's it!</strong>
+
+
+### What's Next/Limitations
+
+* Authentication
+* More complex data end-point support
