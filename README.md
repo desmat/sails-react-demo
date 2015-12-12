@@ -14,7 +14,7 @@ sails lift
 
 ### What is Isomorphic React?
 
-Simply put, your React components will be rendered on the back-end AND front-end. The main benefit will be a more solid feel to the user interface from the user's perspective. Typical 'front-end oriented' web apps typically serve a very basic html page and let the javascript render the rest, resulting in flicker and often a perseved slow load time.
+Simply put, your React components will be rendered on the back-end AND front-end. The main benefit will be a more solid feel to the app from the user's perspective. Typical 'front-end oriented' web apps typically serve a very basic html page and let the javascript render the rest, resulting in flicker and often a perseved slow load time.
 
 Instead this app will deliver a fully-rendered html document, often including fully rendered data-driven components, followed by typical React front-end stuff such as dynamic DOM manipulation.
 
