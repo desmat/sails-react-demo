@@ -76,3 +76,7 @@ Painful details here:
 
 * Authentication
 * More complex data end-point support
+
+### Notes
+
+* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804 then `sails debug`

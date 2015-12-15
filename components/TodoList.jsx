@@ -14,21 +14,16 @@ const TodoList = React.createClass({
       var newTodoItem = {id: 0, text: text, state: 'todo', order: 999}; //id will be updated later
       this.setState({data: this.state.data.concat(newTodoItem)}); 
 
-      Api.post('todo', 
-        JSON.stringify(newTodoItem), 
-        function(data) { 
-          console.log('Success!');
-          //update new portfolio's id
-          _.findWhere(self.state.data, {id: newTodoItem.id}).id=data.id;
-          self.setState({data: self.state.data});
+      Api.post('todo', newTodoItem, function(data) { 
+        //update new portfolio's id
+        _.findWhere(self.state.data, {id: newTodoItem.id}).id=data.id;
+        self.setState({data: self.state.data});
       });
     
     }
   },
 
   setTodoItemState(id, state) {
-    //console.log('setting state [' + state + '] for todo item [' + id + ']');
-
     var todoItem = _.findWhere(this.state.data, {id: id});
     if (typeof todoItem !== 'undefined') {
       todoItem.state = state;
@@ -40,7 +35,7 @@ const TodoList = React.createClass({
         Api.delete('todo', todoItem.id);
       }
       else {
-        Api.put('todo', todoItem.id, JSON.stringify(todoItem));
+        Api.put('todo', todoItem.id, todoItem);
       }
     }
   },
@@ -60,28 +55,29 @@ const TodoList = React.createClass({
         this.setState({data: this.state.data}); 
 
         //update remotely
-        Api.put('todo', todoItem.id, JSON.stringify(todoItem));
+        Api.put('todo', todoItem.id, todoItem);
       }     
     }
   },
 
   getInitialState() {
-    //console.log('*** TodoList.getInitialState');
-
     return {data: Api.getInitial('Todo')};
   },  
 
   componentDidMount() {
-    //console.log('*** TodoList.componentDidMount');
-
     var self = this;
-    Api.get('Todo', function(data) { 
-      //introduce delay for testing purposes
-      //setTimeout(function() {
+    var fetchData = function() {
+      Api.get('Todo', function(data) { 
         self.setState({data: data}); 
-      //}, 500);
-      }
-    );
+      });
+    };
+
+    io.socket.on('todo', function (msg) {
+      //quick and dirty for now
+      fetchData();
+    });
+
+    fetchData();
   },
 
   render() {
@@ -98,8 +94,9 @@ const TodoList = React.createClass({
       if (list.length == 0) {
         return (
         <div>
-          <i className="text-center">Nothing do to! Press the button below and create new items to do!</i>
-
+          <p className="text-center">
+            <i>Nothing do to! Press the button below and create new things to do!</i>
+          </p>
           <br/>
           <div className="text-center">
               <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
@@ -127,9 +124,9 @@ const TodoList = React.createClass({
     else {
       if (list.length == 0) {
         return (
-        <div>
-          <i className="text-center">Nothing to see here, move along!</i>
-        </div>
+        <p className="text-center">
+          <i>Nothing to see here, move along!</i>
+        </p>
         )
       }
       else {
