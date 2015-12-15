@@ -35,7 +35,7 @@ Basic isomorphism:
 
 * Define restful api end-points corresponding to the component
 ```
-sails generate model Foo
+sails generate api Foo
 ```
 * Associate the route with the api end-point(s) via the attribute 'model'
 ```
