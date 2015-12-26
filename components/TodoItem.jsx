@@ -18,10 +18,11 @@ const TodoItem = React.createClass({
       return (
         <div className="row text-nowrap" key={this.props.id}>
           <div className="col-xs-8">
-            {this.props.text} <a onClick={this.setText} href="#"><i className="fa fa-pencil fixed-width" aria-hidden="true"/></a>
+            {this.props.text}
+            &nbsp;<a onClick={this.setText} href="#"><i className="fa fa-pencil fixed-width" aria-hidden="true"/></a>
           </div>
           <div className="col-xs-4 text-right">
-            <button className="btn btn-info" onClick={this.setDone}>Done</button>
+            <a onClick={this.setDone} href="#"><i className="fa fa-check-square-o fixed-width" aria-hidden="true"/></a>
           </div>
         </div>
       );     
@@ -33,7 +34,7 @@ const TodoItem = React.createClass({
             {this.props.text}
           </div>
           <div className="col-xs-4 text-right">
-            <button className="btn btn-warning" onClick={this.setDeleted}>Delete</button>
+            <a onClick={this.setDeleted} href="#"><i className="fa fa-times fixed-width" aria-hidden="true"/></a>
           </div>
         </div>
       );     
