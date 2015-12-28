@@ -142,7 +142,7 @@ var serve = function(req, res, next) {
               }
             });
           }
-          //edge case: there mere some models in the router but last one didn't match
+          //edge case: there were some models in the router but last one didn't match
           else if (i == models.length - 1) {
             //console.log('done fetching data from models; rendering the whole thing');
             return renderHtml(modelsAndData);
