@@ -4,8 +4,6 @@ var React = require("react");
 var Api = require('../assets/js/Api');
 var TodoItem = require('./TodoItem.jsx');
 
-var nextNewTodoTempId = -1; //TODO
-
 const TodoList = React.createClass({
   addTodoItem() {
     var self = this;
@@ -31,6 +29,7 @@ const TodoList = React.createClass({
       //update locally
       this.setState({data: this.state.data}); 
       //update remotely
+
       if (state == 'deleted') {
         Api.delete('todo', todoItem.id);
       }
@@ -61,23 +60,28 @@ const TodoList = React.createClass({
   },
 
   getInitialState() {
-    return {data: Api.getInitial('Todo')};
+    var url = 'todo' + ((typeof this.props.state !== 'undefined') ? '?state=' + this.props.state : '');
+
+    return {data: Api.getInitial(url)};
   },  
 
   componentDidMount() {
     var self = this;
     var fetchData = function() {
-      Api.get('Todo', function(data) { 
+      var url = 'todo' + ((typeof self.props.state !== 'undefined') ? '?state=' + self.props.state : '');
+
+      Api.get(url, function(data) { 
         self.setState({data: data}); 
       });
     };
 
     io.socket.on('todo', function (msg) {
+      //console.log('*** socket on todo');
       //quick and dirty for now
       fetchData();
     });
 
-    fetchData();
+   fetchData();
   },
 
   render() {

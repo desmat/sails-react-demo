@@ -67,7 +67,7 @@ var serve = function(req, res, next) {
         var state = 
           'window.__ReactInitState__ = {' + 
           _.map(modelsAndData, function(modelAndData) {
-            return modelAndData.model + ': ' + JSON.stringify(modelAndData.data)
+            return '"' + modelAndData.model + '": ' + JSON.stringify(modelAndData.data)
           })
           + '};'
         
@@ -95,31 +95,61 @@ var serve = function(req, res, next) {
         var modelsAndData = [];
 
         //TODO: fetch data in parallel
+
         _.each(models, function(model, i) {
-          model = model.trim();
+          var modelAndQuery = model.split('?');
+          model = model.trim().toLowerCase();
 
-          //console.log('fetching data for model [' + model + ']');
-          this[model].find({}, function(err, results) {
-            // make data available for components to render on the back-end
-            global.__ReactInitState__[model] = results;
+          // parse out model name
+          var sailsModelName = modelAndQuery[0].trim().toLowerCase();
+          var sailsModel = this.sails.models[sailsModelName];
 
-            // make data available on the front-end
-            modelsAndData.push({model: model, data: results});
+          // parse out the query portion and convert into json
+          var query = {};
+          if (modelAndQuery.length > 1) {
+            _.each(modelAndQuery[1].split('&'), function(q) {
+              var r = q.split('=');
+              var n = r[0];
+              var v = true;
+              if (r.length > 1) v = r[1];
+              query[n] = v;
+            });
+          }
 
-            if (err) {
-              //return res.serverError(err);
-              console.log("Error fetching Todo data: " + err);
-              //return renderHtml([]);
-            }
+          // console.log('model: ' + sailsModelName);
+          // console.log('query: ' + JSON.stringify(query));
 
-            if (i == models.length - 1) {
-              //console.log('done fetching data from models; rendering the whole thing');
-              return renderHtml(modelsAndData);
-            }
-          });
+          if (typeof sailsModel !== 'undefined') {
+
+            console.log('fetching data for model [' + sailsModelName + '] with query [' + JSON.stringify(query) + ']');
+
+            sailsModel.find(query, function(err, results) {
+             // make data available for components to render on the back-end
+              global.__ReactInitState__[model] = results;
+
+              // make data available on the front-end
+              modelsAndData.push({model: model, data: results});
+
+              if (err) {
+                //return res.serverError(err);
+                console.log("Error fetching Todo data: " + err);
+                //return renderHtml([]);
+              }
+
+              if (i == models.length - 1) {
+                //console.log('done fetching data from models; rendering the whole thing');
+                return renderHtml(modelsAndData);
+              }
+            });
+          }
+          //edge case: there mere some models in the router but last one didn't match
+          else if (i == models.length - 1) {
+            //console.log('done fetching data from models; rendering the whole thing');
+            return renderHtml(modelsAndData);
+          }
         });
       }
-    }
+    } 
     else {
       return next();
     }
