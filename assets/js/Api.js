@@ -8,13 +8,77 @@ var cacheReactInitState = function(model, data) {
 
 const Api = {
 
+  isAuthenticated() {
+    if (typeof window !== 'undefined') {
+      if (window.hasOwnProperty('__ReactInitState__') && 
+          window.__ReactInitState__.hasOwnProperty('_authenticated')) {
+        return window.__ReactInitState__['_authenticated'];
+      }
+    }
+    else if (typeof global !== 'undefined') {
+      if (global.hasOwnProperty('__ReactInitState__') && 
+          global.__ReactInitState__.hasOwnProperty('_authenticated')) {
+        return global.__ReactInitState__['_authenticated'];
+      }
+    }
+
+    return false;    
+  },
+
+  login(username, password, onSuccess, onError) {
+    this.post('login', {username: username, password: password}, function(data) {
+      if (data.hasOwnProperty('login') && data.login == 'ok') {
+        window.__ReactNavAuthenticationChanged(true);
+        if (onSuccess) onSuccess();
+      }
+      else {
+        var msg = data.hasOwnProperty('error') ? data.error : '(unknown)';
+        //console.log("Unable to login: " + msg);
+        if (onError) onError(msg);
+      }
+    });
+  },
+
+  register(username, password, onSuccess, onError) {
+    Api.post('register', {username: username, password: password}, function(data) {
+      //console.dir(data);
+      if (data.hasOwnProperty('register') && data.register == 'ok') {
+        window.__ReactNavAuthenticationChanged(false);
+        if (onSuccess) onSuccess();
+      }
+      else {
+        var msg = data.hasOwnProperty('error') ? data.error : '(unknown)';
+        //console.log("Unable to register: " + msg);
+        if (onError) onError(msg);   
+      }
+    });
+
+  },
+
+  logout(onSuccess, onError) {
+    //bit of a hack i know
+    window.__ReactNavAuthenticationChanged(false);
+
+    Api.get('logout', function() {
+      if (onSuccess) onSuccess();
+    }, function(error) {
+      if (onError) onError();
+    });
+  },
+
+  navigate(url) {
+    //bit of a hack i know
+    window.__ReactNavigate(url);
+  },
+
 	get(model, onSuccess, onError) {
 		io.socket.get('/api/' + model, {}, function(data, jwres) {
 			//console.dir(jwres);
 			if (typeof jwres.error !== 'undefined') {
 				//TODO figure out what to do with errors
 				console.log('Api error: GET ' + '/api/' + model + ': ' + jwres.statusCode);
-				console.dir(jwres.error);
+				console.dir(jwres);
+        if (onError) onError(jwres.statusCode);        
 			}
 			else {
 				cacheReactInitState(model, data);

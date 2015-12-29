@@ -72,11 +72,15 @@ const TodoList = React.createClass({
 
       Api.get(url, function(data) { 
         self.setState({data: data}); 
+      }, function(errorCode) {
+        if (errorCode == 403) {
+          Api.logout();
+          Api.navigate('/login');
+        }
       });
     };
 
     io.socket.on('todo', function (msg) {
-      //console.log('*** socket on todo');
       //quick and dirty for now
       fetchData();
     });
@@ -98,12 +102,12 @@ const TodoList = React.createClass({
       if (list.length == 0) {
         return (
         <div>
-          <p className="text-center">
+          {/*<p className="text-center">
             <i>Nothing do to! Press the button below and create new things to do!</i>
-          </p>
+          </p>*/}
           <br/>
           <div className="text-center">
-              <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
+              <button onClick={this.addTodoItem} className="btn btn-primary">Add</button>
           </div>
         </div>
         )
@@ -119,7 +123,7 @@ const TodoList = React.createClass({
 
             <br/>
             <div className="text-center">
-                <a onClick={this.addTodoItem} className="btn btn-success">
+                <a onClick={this.addTodoItem} className="btn btn-primary">
                   <i className="fa fa-plus" aria-hidden="true"/> Add
                 </a>
             </div>
@@ -131,7 +135,7 @@ const TodoList = React.createClass({
       if (list.length == 0) {
         return (
         <p className="text-center">
-          <i>Nothing to see here, move along!</i>
+          {/*<i>Nothing to see here, move along!</i>*/}
         </p>
         )
       }
