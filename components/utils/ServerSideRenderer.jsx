@@ -33,7 +33,6 @@ var routes = require("../Routes.jsx");
  *
  * Next steps:
  * 1. Support user-specific data
- * 2. Stronger and case-insensitive model resolution
  *
  */
 var serve = function(req, res, next) {
@@ -50,16 +49,16 @@ var serve = function(req, res, next) {
       //console.log('rendering component on path: ' + req.path);
 
       //find the models defined in the routes so that we can load up 
-      var models = 
+      var datae = 
         _.uniq(
           _.flatten(
             _.map(
               _.filter(
                 renderProps.routes, 
-                function(i) { return i.hasOwnProperty('model'); }), 
-              function(i) { if (i.model.indexOf(',')) { return _.map(i.model.split(','), function(i) { return i.trim() }); } else { return i.model; } })));
-      //console.log('models');
-      //console.dir(models);
+                function(i) { return i.hasOwnProperty('data'); }), 
+              function(i) { if (i.data.indexOf(',')) { return _.map(i.data.split(','), function(i) { return i.trim() }); } else { return i.model; } })));
+      // console.log('datae');
+      // console.dir(datae);
 
       var renderHtml = function(modelsAndData, title, description) {
         modelsAndData = modelsAndData || [];
@@ -85,24 +84,18 @@ var serve = function(req, res, next) {
         return res.send(html);
       };
 
-      if (models.length == 0) { 
+      if (datae.length == 0) { 
         //other than lists don't load up in the back-end
         return renderHtml([]);
       }
       else {
-
         global.__ReactInitState__ = [];
         var modelsAndData = [];
 
         //TODO: fetch data in parallel
 
-        _.each(models, function(model, i) {
-          var modelAndQuery = model.split('?');
-          model = model.trim().toLowerCase();
-
-          // parse out model name
-          var sailsModelName = modelAndQuery[0].trim().toLowerCase();
-          var sailsModel = this.sails.models[sailsModelName];
+        _.each(datae, function(data, i) {
+          var modelAndQuery = data.split('?');
 
           // parse out the query portion and convert into json
           var query = {};
@@ -116,19 +109,30 @@ var serve = function(req, res, next) {
             });
           }
 
+          // parse out specific record url (Foobar/123)
+          var modelAndId = modelAndQuery[0].trim().split('/');
+          if (modelAndId.length > 1) query['id'] = modelAndId[1];
+
+          // parse out model name
+          var sailsModelName = modelAndId[0].trim().toLowerCase();
+          var sailsModel = this.sails.models[sailsModelName];
+
+          //save lowercased to keep ourselves out of trouble
+          data = data.trim().toLowerCase();
+
           // console.log('model: ' + sailsModelName);
           // console.log('query: ' + JSON.stringify(query));
 
           if (typeof sailsModel !== 'undefined') {
 
-            console.log('fetching data for model [' + sailsModelName + '] with query [' + JSON.stringify(query) + ']');
+            sails.log.debug('fetching data for model [' + sailsModelName + '] with query [' + JSON.stringify(query) + ']');
 
             sailsModel.find(query, function(err, results) {
              // make data available for components to render on the back-end
-              global.__ReactInitState__[model] = results;
+              global.__ReactInitState__[data] = results;
 
               // make data available on the front-end
-              modelsAndData.push({model: model, data: results});
+              modelsAndData.push({model: data, data: results});
 
               if (err) {
                 //return res.serverError(err);
@@ -136,14 +140,14 @@ var serve = function(req, res, next) {
                 //return renderHtml([]);
               }
 
-              if (i == models.length - 1) {
+              if (i == datae.length - 1) {
                 //console.log('done fetching data from models; rendering the whole thing');
                 return renderHtml(modelsAndData);
               }
             });
           }
           //edge case: there were some models in the router but last one didn't match
-          else if (i == models.length - 1) {
+          else if (i == datae.length - 1) {
             //console.log('done fetching data from models; rendering the whole thing');
             return renderHtml(modelsAndData);
           }

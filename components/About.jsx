@@ -4,13 +4,13 @@ var Api = require('../assets/js/Api');
 
 const About = React.createClass({
   getInitialState() {
-    return {data: Api.getInitial('About')};
+    return {data: Api.getInitial('about')};
   },  
 
   componentDidMount() {
     var self = this;
-    Api.get('About', function(data) { 
-    	console.log('got data');
+    Api.get('about', function(data) { 
+    	//console.log('got data');
       self.setState({data: data}); 
     });
   },
