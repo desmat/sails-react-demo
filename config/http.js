@@ -8,17 +8,7 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
-
-require("node-jsx").install({extension: ".jsx"});
-
-var _ = require('underscore');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ReactDOMServer = require('react-dom/server') ;
-var Router = require("react-router");
-var routes = require("../components/Routes");
-var nodePackage = require('./../package');
-var createLocation = require('history/lib/createLocation');
+require("node-jsx").install({extension: ".jsx"}); //required for ServerSideRenderer
 var ServerSideRenderer = require('../components/utils/ServerSideRenderer.jsx');
 
 module.exports.http = {
