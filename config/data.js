@@ -51,8 +51,9 @@ module.exports.load = function() {
             }
             else {
               //mark as inserted
-              Database.create({model: v, count: k.length}, function() {
+              Database.create({model: v, count: (typeof k === 'Array' ? k.length : 1)}, function() {
                 if (err) sails.log.err(err);
+                //else sails.log.debug('marked [' + v + '] records as inserted');          
               });
             }
           });
