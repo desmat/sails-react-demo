@@ -11,9 +11,7 @@
 
 module.exports.bootstrap = function(cb) {
   // Load up initial data
-  //require('./data').load();
-
-  //look at database table, compare with data structure above, insert missing records, mark as inserted in database  
+  // look at database table, compare with data structure above, insert missing records, mark as inserted in database  
   var data = require('./data').data;
 
   Database.count().then(function(count) {
@@ -25,22 +23,49 @@ module.exports.bootstrap = function(cb) {
         
         //split record as name-value pair
         _.each(data, function(k, v) {          
-
           sails.log.debug('Loading up intial [' + v + '] records');          
-          this[v].create(k, function(err, created) {
-            if (err) {
-              sails.log.err(err);
-            }
-            else {
-              //mark as inserted
-              Database.create({model: v, count: (typeof k === 'Array' ? k.length : 1)}, function() {
-                if (err) sails.log.err(err);
-                //else sails.log.debug('marked [' + v + '] records as inserted');          
-              });
-            }
-          });
+
+          try {
+            this[v].create(k, function(err, created) {
+              if (err) {
+                sails.log.err(err);
+              }
+              else {
+                //mark as inserted
+                Database.create({model: v, count: (typeof k === 'Array' ? k.length : 1)}, function() {
+                  if (err) sails.log.err(err);
+                  //else sails.log.debug('marked [' + v + '] records as inserted');          
+                });
+              }
+            });
+          } 
+          catch (err) {
+            sails.log.warn("Error loading initial [" + v + "] records: " + err);
+          }
         });
       });
+    }
+  });
+
+  // JOBS
+
+  var jobs = require('./jobs').jobs;
+
+  _.each(jobs, function(job) {
+    sails.log.debug('Scheduling job [' + job.name + ']');
+
+    try {
+      setInterval(function() {
+        try {
+          job.job();
+        }
+        catch (err) {
+          sails.log.warn("Error executing job [" + job.name + "]: " + err);
+        }
+      }, job.interval);
+    }
+    catch (err) {
+      sails.log.warn("Error scheduling job [" + job.name + "]: " + err);
     }
   });
 
