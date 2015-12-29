@@ -119,7 +119,9 @@ const TodoList = React.createClass({
 
             <br/>
             <div className="text-center">
-                <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
+                <a onClick={this.addTodoItem} className="btn btn-success">
+                  <i className="fa fa-plus" aria-hidden="true"/> Add
+                </a>
             </div>
           </div>
         );
