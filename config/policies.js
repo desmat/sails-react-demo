@@ -19,9 +19,12 @@
 
 module.exports.policies = {
 
-  '*': ['deleteExtraRequestParams', 'sessionAuth'],
+  '*': ['deleteExtraRequestParams', 'sessionAuthRedirectToLogin'],
+  'todo': 'sessionAuth', //api end-point
   'about': true,
   'login': true,
+  'register': true,
+
 
   /***************************************************************************
   *                                                                          *

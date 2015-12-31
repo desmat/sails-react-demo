@@ -65,10 +65,11 @@ var serve = function(req, res, next) {
 
         var state = 
           'window.__ReactInitState__ = {' + 
+          '"_authenticated": ' + (req.hasOwnProperty('session') && req.session.hasOwnProperty('authenticated') && req.session.authenticated) + ', ' + 
           _.map(modelsAndData, function(modelAndData) {
             return '"' + modelAndData.model + '": ' + JSON.stringify(modelAndData.data)
-          })
-          + '};'
+          }) + 
+          '};'
         
         var html = renderToString(htmlComponent({
           locals: {
@@ -84,12 +85,14 @@ var serve = function(req, res, next) {
         return res.send(html);
       };
 
+      global.__ReactInitState__ = [];        
+      global.__ReactInitState__['_authenticated'] = (req.hasOwnProperty('session') && req.session.hasOwnProperty('authenticated') && req.session.authenticated);
+
       if (datae.length == 0) { 
         //other than lists don't load up in the back-end
-        return renderHtml([]);
+        return renderHtml();
       }
       else {
-        global.__ReactInitState__ = [];
         var modelsAndData = [];
 
         //TODO: fetch data in parallel

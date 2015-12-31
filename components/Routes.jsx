@@ -10,10 +10,12 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
  * Supports queries (Foo?bar=car) and record-specific path (Foo/123).
  */
 const routes = (
-    <Route component={require("./Body.jsx")} data="todo?state=todo, todo?state=done" >
-      <Route path="/" component={require("./Todo.jsx")} />
-      <Route path="done" component={require("./Done.jsx")} />
+    <Route component={require("./Body.jsx")}  >
+      <Route path="/" component={require("./Todo.jsx")} data="todo?state=todo"/>
+      <Route path="done" component={require("./Done.jsx")} data="todo?state=done"/>
       <Route path="about" component={require("./About.jsx")} data="about" />
+      <Route path="login" component={require("./Login.jsx")} />
+      <Route path="register" component={require("./Register.jsx")} />
     </Route>
 )
 

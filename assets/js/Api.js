@@ -8,13 +8,31 @@ var cacheReactInitState = function(model, data) {
 
 const Api = {
 
+  isAuthenticated() {
+    if (typeof window !== 'undefined') {
+      if (window.hasOwnProperty('__ReactInitState__') && 
+          window.__ReactInitState__.hasOwnProperty('_authenticated')) {
+        return window.__ReactInitState__['_authenticated'];
+      }
+    }
+    else if (typeof global !== 'undefined') {
+      if (global.hasOwnProperty('__ReactInitState__') && 
+          global.__ReactInitState__.hasOwnProperty('_authenticated')) {
+        return global.__ReactInitState__['_authenticated'];
+      }
+    }
+
+    return false;    
+  },
+
 	get(model, onSuccess, onError) {
 		io.socket.get('/api/' + model, {}, function(data, jwres) {
 			//console.dir(jwres);
 			if (typeof jwres.error !== 'undefined') {
 				//TODO figure out what to do with errors
 				console.log('Api error: GET ' + '/api/' + model + ': ' + jwres.statusCode);
-				console.dir(jwres.error);
+				console.dir(jwres);
+        if (onError) onError(jwres.statusCode);        
 			}
 			else {
 				cacheReactInitState(model, data);

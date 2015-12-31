@@ -113,11 +113,13 @@ module.exports.http = {
         if (!granted) {
           //return res.send('DENIED!');
           //return res.forbidden('You are not permitted to perform this action.');
-          // return res.redirect('login?error=forbidden');
+          return res.redirect('/login?error=forbidden');
           //forbiddenResponse(req, res, 'Access Denied');
-          res.status(403);
-          res.send("<html><body>Access Denied</br></br><a href='/login'>Go to Login</a></body></html>");
-          return;          
+          //res.status(403);
+          //res.send("<html><body>Access Denied</br></br><a href='/login'>Go to Login</a></body></html>");
+          // req.path = '/login';
+          // ServerSideRenderer(req, res, next);
+          // return;          
         }
       }
 

@@ -72,6 +72,15 @@ const TodoList = React.createClass({
 
       Api.get(url, function(data) { 
         self.setState({data: data}); 
+      }, function(errorCode) {
+        if (errorCode == 403) {
+          //console.log('REDIRECT TO LOGIN HERE');
+          window.location = 'login';
+        }
+        else if (errorCode == 302) {
+          //console.log('REDIRECT TO LOGIN HERE');
+          window.location = 'login';
+        }
       });
     };
 
@@ -98,9 +107,9 @@ const TodoList = React.createClass({
       if (list.length == 0) {
         return (
         <div>
-          <p className="text-center">
+          {/*<p className="text-center">
             <i>Nothing do to! Press the button below and create new things to do!</i>
-          </p>
+          </p>*/}
           <br/>
           <div className="text-center">
               <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
@@ -131,7 +140,7 @@ const TodoList = React.createClass({
       if (list.length == 0) {
         return (
         <p className="text-center">
-          <i>Nothing to see here, move along!</i>
+          {/*<i>Nothing to see here, move along!</i>*/}
         </p>
         )
       }

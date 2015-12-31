@@ -6,10 +6,11 @@
  */
 
 module.exports = {
-  index: function (req, res) {
-    console.log('login controller default');
-    return res.send("<html><body>login controller response</br></br><a href='/login/login'>Login</a></br><a href='/login/logout'>Logout</a></body></html>");
-  },  
+  // index: function (req, res) {
+  //   console.log('login controller default');
+  //   return res.send("<html><body>login controller response</br></br><a href='/login/login'>Login</a></br><a href='/login/logout'>Logout</a></body></html>");
+  // },  
+
   login: function (req, res) {
     console.log('login controller login');
 
@@ -19,6 +20,7 @@ module.exports = {
     //return res.send("<html><body>login controller response</br></br><a href='foo'>go foo</a></body></html>");
     return res.redirect('/');
   },  
+
   logout: function (req, res) {
     console.log('login controller logout');
 
@@ -26,6 +28,6 @@ module.exports = {
     req.session.authenticated = false;    
 
     //return res.send("<html><body>login controller response</br></br><a href='foo'>go foo</a></body></html>");
-    return res.redirect('/');
+    return res.redirect('/login');
   },  
 };
