@@ -1,6 +1,6 @@
 //ignore jquery extra params
 module.exports = function(req, res, next) {
-    //console.log('running deleteExtraRequestParams criteria');
+    //console.log('Applying deleteExtraRequestParams policy');
 
     if(req.query._) delete req.query._;
 

@@ -19,7 +19,14 @@
 
 module.exports.policies = {
 
-  '*': 'deleteExtraRequestParams',
+
+  'todo': 'sessionAuth',
+
+  '*': ['deleteExtraRequestParams', 'sessionAuth'],
+
+  'about': true,
+
+  'login': true,
 
   /***************************************************************************
   *                                                                          *

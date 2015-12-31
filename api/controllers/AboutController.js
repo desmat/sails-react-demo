@@ -6,6 +6,13 @@
  */
 
 module.exports = {
-	
+  // index: function (req, res) {
+  //   console.log('about controller default');
+  //   return res.send("ok");
+  // },
+  // foobar: function (req, res) {
+  //   console.log('about controller default');
+  //   return res.send("ok");
+  // },
 };
 
