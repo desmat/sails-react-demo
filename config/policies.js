@@ -20,7 +20,12 @@
 module.exports.policies = {
 
   '*': ['deleteExtraRequestParams', 'sessionAuthRedirectToLogin'],
-  'todo': 'sessionAuth', //api end-point
+  
+  'todo': ['sessionAuth', 'addUserIdRequestParam'], //api end-point
+
+  '/': ['sessionAuth', 'addUserIdRequestParam'], //component
+  'done': ['sessionAuth', 'addUserIdRequestParam'], //component
+
   'about': true,
   'login': true,
   'register': true,

@@ -1,15 +1,59 @@
 var React = require("react");
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
+var IndexLink = ReactRouter.IndexLink;
 var Api = require('../assets/js/Api');
+var $ = require('jquery');
 
 var Nav = React.createClass({
+
+  authenticationChanged(authenticated) {
+    this.state.authenticated = authenticated;
+    window.__ReactInitState__['_authenticated'] = this.state.authenticated;
+    this.setState({authenticated: this.state.authenticated});
+  },
+
+  logout(e) {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+
+    //do front-end first to make it seem snappy
+    this.state.authenticated = false;
+    this.setState({authenticated: this.state.authenticated});
+    window.__ReactInitState__['_authenticated'] = this.state.authenticated;
+    window.__ReactNavAuthenticationChanged(this.state.authenticated);
+    window.__ReactNavigate('/login');
+
+    //var self = this;
+    Api.get('logout', function(data) { 
+      //console.log(data);
+      // self.state.authenticated = false;
+      // self.setState({authenticated: self.state.authenticated});
+      // window.__ReactInitState__['_authenticated'] = self.state.authenticated;
+      // window.__ReactNavAuthenticationChanged(self.state.authenticated);
+      // window.__ReactNavigate('/login');
+
+    }, function(errorCode) {
+      console.log("Error logout: errorCode=" + errorCode);
+    });
+
+    return false;
+  },
+
   getInitialState() {
     return {authenticated: Api.isAuthenticated()};
   },  
 
   componentDidMount() {
-    return {authenticated: Api.isAuthenticated()};
+    //super hack!
+    if (typeof window !== 'undefined') {
+      window.__ReactNavAuthenticationChanged = this.authenticationChanged;
+    }
+
+    //invalidate a nodes with dynamic onclicks (react won't allow us to cancel event propagation)
+    $('.invalidateHref').attr('href', '#');
+
+    return {authenticated: this.state.authenticated};
   },
 
   render: function() {
@@ -29,10 +73,10 @@ var Nav = React.createClass({
                 </div>
                 <div id="navbar" className="navbar-collapse collapse">
                   <ul className="nav navbar-nav navbar-right">
-                    <li><Link to="/" activeClassName="selected">Todo</Link></li>
+                    <li><IndexLink to="/" activeClassName="selected">Todo</IndexLink></li>
                     <li><Link to="/done" activeClassName="selected">Done</Link></li>
                     <li><Link to="/about" activeClassName="selected">About</Link></li>
-                    <li><a href="/login/logout" activeClassName="selected">Logout</a></li>
+                    <li><a href="#" onClick={this.logout} className="invalidateHref" activeClassName="selected">Logout</a></li>
                   </ul>
                 </div>
               </div>

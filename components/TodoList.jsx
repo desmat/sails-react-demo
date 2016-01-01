@@ -75,12 +75,17 @@ const TodoList = React.createClass({
       }, function(errorCode) {
         if (errorCode == 403) {
           //console.log('REDIRECT TO LOGIN HERE');
-          window.location = 'login';
+          //window.location = 'login';
+          this.state.authenticated = false;
+          this.setState({authenticated: this.state.authenticated});
+          window.__ReactNavAuthenticationChanged(this.state.authenticated);
+          this.props.history.push('/');
         }
-        else if (errorCode == 302) {
-          //console.log('REDIRECT TO LOGIN HERE');
-          window.location = 'login';
-        }
+        // else if (errorCode == 302) {
+        //   //console.log('REDIRECT TO LOGIN HERE');
+        //   //window.location = 'login';
+        //   this.props.history.push('/')
+        // }
       });
     };
 
@@ -112,7 +117,7 @@ const TodoList = React.createClass({
           </p>*/}
           <br/>
           <div className="text-center">
-              <button onClick={this.addTodoItem} className="btn btn-success">Add</button>
+              <button onClick={this.addTodoItem} className="btn btn-primary">Add</button>
           </div>
         </div>
         )
@@ -128,7 +133,7 @@ const TodoList = React.createClass({
 
             <br/>
             <div className="text-center">
-                <a onClick={this.addTodoItem} className="btn btn-success">
+                <a onClick={this.addTodoItem} className="btn btn-primary">
                   <i className="fa fa-plus" aria-hidden="true"/> Add
                 </a>
             </div>

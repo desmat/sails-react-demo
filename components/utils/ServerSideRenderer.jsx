@@ -36,7 +36,7 @@ var routes = require("../Routes.jsx");
  *
  */
 var serve = function(req, res, next) {
-  //console.log("Rendering " + req.path);
+  // console.log("Rendering " + req.originalUrl);
 
   var location = createLocation(req.originalUrl);
 
@@ -108,6 +108,17 @@ var serve = function(req, res, next) {
               var n = r[0];
               var v = true;
               if (r.length > 1) v = r[1];
+
+              //apply virtual variables such as :userId
+              if (v == ':userId' && req.hasOwnProperty('session') && req.session.hasOwnProperty('userId')) {
+                v = req.session.userId;
+                //also this is a 'virtual query param', meaning that the front-end doesn't know it was applied. Let's remove it from the data key
+                data = data.replace(n + '=:userId&', '').replace(n + '=:userId', '');
+                //and remove trailing '?' or '&'
+                if (data.indexOf('&', data.length - 1) !== -1) data = data.substring(0, data.length - 1);
+                if (data.indexOf('?', data.length - 1) !== -1) data = data.substring(0, data.length - 1);
+              }
+              
               query[n] = v;
             });
           }

@@ -20,26 +20,43 @@
  */
 module.exports.data = [
   {
+    User: [
+      {
+        "username": "user1", 
+        "password": "Password1"
+      },
+      {
+        "username": "user2", 
+        "password": "Password1"
+      },
+    ]
+  },
+  {
     Todo: [
       {
         "text": "The thing that I need to do",
         "state": "todo",
+        "userId": 1,
       },
       {
         "text": "The other thing that needs to get done",
         "state": "todo",
+        "userId": 2,
       },
       {
         "text": "Finally do this",
         "state": "todo",
+        "userId": 1,
       },
       {
         "text": "The thing that was done",
         "state": "done",
+        "userId": 1,
       },
       {
         "text": "The other thing that got done",
         "state": "done",
+        "userId": 2,
       }
     ]
   }, 
