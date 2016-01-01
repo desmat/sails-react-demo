@@ -13,7 +13,6 @@ var _ = require('underscore');
 var ServerSideRenderer = require('../components/utils/ServerSideRenderer.jsx');
 var Utils = require('../assets/js/Utils');
 var reactRoutes = Utils.readReactRoutes(require('../components/Routes.jsx'));
-var forbiddenResponse = require('../api/responses/forbidden');
 
 module.exports.http = {
 

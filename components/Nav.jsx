@@ -13,31 +13,13 @@ var Nav = React.createClass({
     this.setState({authenticated: this.state.authenticated});
   },
 
-  logout(e) {
-    e.stopPropagation();
-    e.nativeEvent.stopImmediatePropagation();
-
+  logout() {
     //do front-end first to make it seem snappy
-    this.state.authenticated = false;
-    this.setState({authenticated: this.state.authenticated});
-    window.__ReactInitState__['_authenticated'] = this.state.authenticated;
-    window.__ReactNavAuthenticationChanged(this.state.authenticated);
+    this.authenticationChanged(false);
     window.__ReactNavigate('/login');
 
-    //var self = this;
-    Api.get('logout', function(data) { 
-      //console.log(data);
-      // self.state.authenticated = false;
-      // self.setState({authenticated: self.state.authenticated});
-      // window.__ReactInitState__['_authenticated'] = self.state.authenticated;
-      // window.__ReactNavAuthenticationChanged(self.state.authenticated);
-      // window.__ReactNavigate('/login');
-
-    }, function(errorCode) {
-      console.log("Error logout: errorCode=" + errorCode);
-    });
-
-    return false;
+    //logout backend
+    Api.get('logout');
   },
 
   getInitialState() {
@@ -45,7 +27,7 @@ var Nav = React.createClass({
   },  
 
   componentDidMount() {
-    //super hack!
+    //super hack! I need to figure out how to not use global scope to pass along callbacks in this manner...
     if (typeof window !== 'undefined') {
       window.__ReactNavAuthenticationChanged = this.authenticationChanged;
     }
