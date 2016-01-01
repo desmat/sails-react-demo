@@ -21,7 +21,7 @@ const Login = React.createClass({
   render() {
     return (
       <div>
-        <div>
+        <form action="/login/login" method="get">
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
             <input id='username' className="form-control" type="text" placeholder="Email address" defaultValue="user1"/>
@@ -35,9 +35,9 @@ const Login = React.createClass({
         <p/>
 
         <p className="text-center">
-          <a className="btn btn-primary" href="#" onClick={this.login}>
+          <input type="submit" className="btn btn-primary" >
             <i className="fa fa-user fa-fw"></i> Login
-          </a>
+          </input>
         </p>
 
         <p className="text-center">Don't have an account? <Link to="register">Register</Link></p>
