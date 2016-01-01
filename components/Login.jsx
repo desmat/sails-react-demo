@@ -7,7 +7,7 @@ var $ = require('jquery');
 const Login = React.createClass({
 
   login() {
-    window.location.href = '/login/login?username=' + $('#username').val() + '&password=' + $('#password').val();
+    $("form")[0].submit();
   },
 
   getInitialState() {
@@ -20,28 +20,28 @@ const Login = React.createClass({
 
   render() {
     return (
-      <div>
-        <form action="/login/login" method="get">
+      <form action="/login/login" method="post">
+        <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input id='username' className="form-control" type="text" placeholder="Email address" defaultValue="user1"/>
+            <input name="username" className="form-control" type="text" placeholder="Email address" defaultValue="user1"/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-            <input id='password' className="form-control" type="password" placeholder="Password" defaultValue="Password1"/>
+            <input name="password" className="form-control" type="password" placeholder="Password" defaultValue="Password1"/>
           </div>
         </div>
 
         <p/>
 
         <p className="text-center">
-          <input type="submit" className="btn btn-primary" >
+          <a href="#" className="btn btn-primary" onClick={this.login} >
             <i className="fa fa-user fa-fw"></i> Login
-          </input>
+          </a>
         </p>
 
         <p className="text-center">Don't have an account? <Link to="register">Register</Link></p>
-      </div>
+      </form>
     )
   }
 });

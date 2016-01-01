@@ -6,20 +6,19 @@
  */
 
 module.exports = {
-  // index: function (req, res) {
-  //   console.log('login controller default');
-  //   return res.send("<html><body>login controller response</br></br><a href='/login/login'>Login</a></br><a href='/login/logout'>Logout</a></body></html>");
-  // },  
 
   login: function (req, res) {
     //console.log('login controller login');
 
-    //TODO: Do post instead of get
+    if (!req.hasOwnProperty('body') || !req.body.hasOwnProperty('username') || 
+        !req.body.hasOwnProperty('password') || !req.body.username || !req.body.password) {
+      res.writeHead(302, {'Location': '/login?error=loginMissing'});
+      return res.end();
+    }
 
-    User.findOne({username: req.query.username, password: req.query.password}, function(err, result) {
+    User.findOne({username: req.body.username, password: req.body.password}, function(err, result) {
       if (err) {
         console.log('Login error: ' + err);
-        //TODO send back login error to front-end
         res.writeHead(302, {'Location': '/login?error=generalError'});
         return res.end();
       }
@@ -39,34 +38,38 @@ module.exports = {
   register: function (req, res) {
     //console.log('login controller register');
 
-    //TODO: Do post instead of get
+    if (!req.hasOwnProperty('body') || !req.body.hasOwnProperty('username') || 
+        !req.body.hasOwnProperty('password') || !req.body.username || !req.body.password) {
+      res.writeHead(302, {'Location': '/register?error=loginMissing'});
+      return res.end();
+    }
 
     //look for existing username
-    User.findOne({username: req.query.username}, function(err, result) {
+    User.findOne({username: req.body.username}, function(err, result) {
       if (err) {
         console.log('Register error: ' + err);
         //TODO send back login error to front-end
-        res.writeHead(302, {'Location': '/login?error=generalError'});
+        res.writeHead(302, {'Location': '/register?error=generalError'});
         return res.end();
       }
       else if (result) {
-        res.writeHead(302, {'Location': '/login?error=usernameExists'});
+        res.writeHead(302, {'Location': '/register?error=usernameExists'});
         return res.end();
 
       }
 
       //username not found, create
-      User.create({username: req.query.username, password: req.query.password}, function(err, result) {
+      User.create({username: req.body.username, password: req.body.password}, function(err, result) {
         if (err) {
           console.log('Register error: ' + err);
           //TODO send back login error to front-end
-          res.writeHead(302, {'Location': '/login?error=generalError'});
+          res.writeHead(302, {'Location': '/register?error=generalError'});
           return res.end();
         }
         else if (!result) {
           console.log('Register error: (unknown)');
           //TODO send back login error to front-end
-          res.writeHead(302, {'Location': '/login?error=unknownError'});
+          res.writeHead(302, {'Location': '/register?error=unknownError'});
           return res.end();
         }
 
@@ -83,7 +86,6 @@ module.exports = {
   logout: function (req, res) {
     //console.log('login controller logout');
 
-    //TODO perform real authentication here
     delete req.session.authenticated;    
     delete req.session.userId;
 

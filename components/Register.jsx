@@ -5,20 +5,20 @@ var Api = require('../assets/js/Api');
 
 const Register = React.createClass({
   register() {
-    window.location.href = '/login/register?username=' + $('#username').val() + '&password=' + $('#password').val();
+    $("form")[0].submit();
   },
 
   render() {
     return (
-      <div>
+      <form action="/login/register" method="post">
         <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input id="username" className="form-control" type="text" placeholder="Email address"/>
+            <input name="username" className="form-control" type="text" placeholder="Email address"/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-            <input id="password" className="form-control" type="text" placeholder="Password" defaultValue="Password1"/>
+            <input name="password" className="form-control" type="text" placeholder="Password" defaultValue="Password1"/>
           </div>
         </div>
 
@@ -31,7 +31,7 @@ const Register = React.createClass({
         </p>
 
         <p className="text-center">Already have an account? <Link to="login">Login</Link></p>
-      </div>
+      </form>
     )
   }
 });
