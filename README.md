@@ -44,7 +44,7 @@ sails generate api Foo
   <Route path="/secured" component={Secured} data="secured?userId=:userId"/>
 </Route>	
 ```
-** Note that the 'data' attribute supports queries including the special query 'userId=:userId'
+**Note that the 'data' attribute supports queries including the special query 'userId=:userId'**
 
 * Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
 ```
