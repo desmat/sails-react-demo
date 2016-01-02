@@ -37,21 +37,24 @@ Basic isomorphism:
 ```
 sails generate api Foo
 ```
-* Associate the route with the api end-point(s) via the attribute 'model'
+* Associate the route with the api end-point(s) via the attribute 'data'
 ```
-<Route path="/foo" component={Foo} model="Foo"/>
-	<Route path="/bar" component={Bar} model="Bar"/>
+<Route path="/foo" component={Foo} data="foo"/>
+  <Route path="/bar" component={Bar} data="bar?a=b"/>
+  <Route path="/secured" component={Secured} data="secured?userId=:userId"/>
 </Route>	
 ```
+** Note that the 'data' attribute supports queries including the special query 'userId=:userId'
+
 * Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
 ```
 ...
 getInitialState() {
-	return {data: Api.getInitial('Foo')};
+	return {data: Api.getInitial('foo')};
 },  
 
 componentDidMount() {
-	Api.get('Foo', function(data) { 
+	Api.get('foo', function(data) { 
 		/* update front-end state */
 	});
 },
@@ -74,9 +77,8 @@ Painful details here:
 
 ### What's Next/Limitations
 
-* Authentication
-* More complex data end-point support
+* Consistent use of 
 
 ### Notes
 
-* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804 then `sails debug`
+* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804, `sails debug` in a cmd-line, 'node-inspector' in another, open http://localhost:1337/ in a Chrome tab and http://localhost:8080/debug?port=5858 in another.

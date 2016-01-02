@@ -9,6 +9,7 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
 /* 
  * New attribute 'data' is supported and maps to api end-points.
  * Supports queries (Foo?bar=car) and record-specific path (Foo/123).
+ * Note: for user-specific data, use query param userId=:userId where userId is a field on said data
  */
 const routes = (
     <Route path="/" component={require("./Body.jsx")}  >

@@ -5,6 +5,7 @@ var Api = require('../assets/js/Api');
 
 const Register = React.createClass({
   register() {
+    // TODO move to Api.js
     $("form")[0].submit();
   },
 
@@ -18,7 +19,7 @@ const Register = React.createClass({
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-            <input name="password" className="form-control" type="text" placeholder="Password" defaultValue="Password1"/>
+            <input name="password" className="form-control" type="password" placeholder="Password"/>
           </div>
         </div>
 

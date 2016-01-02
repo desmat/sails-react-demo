@@ -14,6 +14,8 @@ var Nav = React.createClass({
   },
 
   logout() {
+    // TODO move to Api.js
+    
     //do front-end first to make it seem snappy
     this.authenticationChanged(false);
     window.__ReactNavigate('/login');

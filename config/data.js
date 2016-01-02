@@ -22,11 +22,11 @@ module.exports.data = [
   {
     User: [
       {
-        "username": "user1", 
+        "username": "Demo1", 
         "password": "Password1"
       },
       {
-        "username": "user2", 
+        "username": "Demo2", 
         "password": "Password1"
       },
     ]

@@ -7,15 +7,28 @@ var $ = require('jquery');
 const Login = React.createClass({
 
   login() {
+    // TODO move to Api.js
     $("form")[0].submit();
   },
 
+  setDemoUserCredentials1() {
+    this.setDemoUserCredentials(1);
+  },
+  setDemoUserCredentials2() {
+    this.setDemoUserCredentials(2);
+  },
+  setDemoUserCredentials(num) {
+    this.state.data.username="Demo" + num;
+    this.state.data.password="Password1";
+    this.setState({data: this.state.data});
+  },
+
   getInitialState() {
-    return {authenticated: Api.isAuthenticated()};
+    return {authenticated: Api.isAuthenticated(), data: {username: '', password: ''}};
   },  
 
   componentDidMount() {
-    return {authenticated: this.state.authenticated};
+    return {authenticated: this.state.authenticated, data: {username: '', password: ''}};
   },
 
   render() {
@@ -24,15 +37,20 @@ const Login = React.createClass({
         <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input name="username" className="form-control" type="text" placeholder="Email address" defaultValue="user1"/>
+            <input name="username" className="form-control" type="text" placeholder="Email address" value={this.state.data.username}/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-            <input name="password" className="form-control" type="password" placeholder="Password" defaultValue="Password1"/>
+            <input name="password" className="form-control" type="password" placeholder="Password" value={this.state.data.password}/>
           </div>
         </div>
 
-        <p/>
+        <p className="text-right">
+          (Demo users: 
+          &nbsp;<a href="#" onClick={this.setDemoUserCredentials1}>Demo1</a> 
+          &nbsp;<a href="#" onClick={this.setDemoUserCredentials2}>Demo2</a>
+          )
+        </p>
 
         <p className="text-center">
           <a href="#" className="btn btn-primary" onClick={this.login} >

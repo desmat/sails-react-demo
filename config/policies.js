@@ -19,17 +19,19 @@
 
 module.exports.policies = {
 
-  '*': ['deleteExtraRequestParams', 'sessionAuthRedirectToLogin'],
+  '*': ['deleteExtraRequestParams', 'sessionAuthRedirectToLogin'], //require login by default
   
-  'todo': ['sessionAuth', 'addUserIdRequestParam'], //api end-point
+  'api': ['sessionAuth', 'addUserIdRequestParam'],  //api end-points 
+  'todo': ['sessionAuth', 'addUserIdRequestParam'],  //api end-points 
 
-  '/': ['sessionAuth', 'addUserIdRequestParam'], //component
+  '/': ['sessionAuth', 'addUserIdRequestParam'],    //component
   'done': ['sessionAuth', 'addUserIdRequestParam'], //component
 
-  'about': true,
-  'login': true,
-  'register': true,
+  'login': true,    //no login required
+  'register': true, //no login required
+  'about': true,    //no login required
 
+  'user': false,    //no access to user end-point (TODO admin type user)
 
   /***************************************************************************
   *                                                                          *
