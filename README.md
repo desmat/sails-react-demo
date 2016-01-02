@@ -77,7 +77,7 @@ Painful details here:
 
 ### What's Next/Limitations
 
-* Consistent use of 
+* Ability to overwrite end-point implementations via ApiController and consistent use of end-point logic in ServerSideRenderer via sails.router.route()
 
 ### Notes
 
