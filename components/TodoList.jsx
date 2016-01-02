@@ -74,23 +74,13 @@ const TodoList = React.createClass({
         self.setState({data: data}); 
       }, function(errorCode) {
         if (errorCode == 403) {
-          //console.log('REDIRECT TO LOGIN HERE');
-          //window.location = 'login';
-          this.state.authenticated = false;
-          this.setState({authenticated: this.state.authenticated});
-          window.__ReactNavAuthenticationChanged(this.state.authenticated);
-          this.props.history.push('/');
+          Api.logout();
+          Api.navigate('/login');
         }
-        // else if (errorCode == 302) {
-        //   //console.log('REDIRECT TO LOGIN HERE');
-        //   //window.location = 'login';
-        //   this.props.history.push('/')
-        // }
       });
     };
 
     io.socket.on('todo', function (msg) {
-      //console.log('*** socket on todo');
       //quick and dirty for now
       fetchData();
     });

@@ -7,21 +7,20 @@ var $ = require('jquery');
 
 var Nav = React.createClass({
 
-  authenticationChanged(authenticated) {
-    this.state.authenticated = authenticated;
-    window.__ReactInitState__['_authenticated'] = this.state.authenticated;
-    this.setState({authenticated: this.state.authenticated});
-  },
-
   logout() {
-    // TODO move to Api.js
-    
     //do front-end first to make it seem snappy
     this.authenticationChanged(false);
-    window.__ReactNavigate('/login');
+    Api.navigate('/login');
 
     //logout backend
     Api.get('logout');
+  },
+
+  authenticationChanged(authenticated) {
+    //bit of a hack i know
+    this.state.authenticated = authenticated;
+    window.__ReactInitState__['_authenticated'] = this.state.authenticated;
+    this.setState({authenticated: this.state.authenticated});
   },
 
   getInitialState() {
@@ -34,10 +33,7 @@ var Nav = React.createClass({
       window.__ReactNavAuthenticationChanged = this.authenticationChanged;
     }
 
-    //invalidate a nodes with dynamic onclicks (react won't allow us to cancel event propagation)
-    $('.invalidateHref').attr('href', '#');
-
-    return {authenticated: this.state.authenticated};
+    return {authenticated: Api.isAuthenticated()};
   },
 
   render: function() {
@@ -60,7 +56,7 @@ var Nav = React.createClass({
                     <li><IndexLink to="/" activeClassName="selected">Todo</IndexLink></li>
                     <li><Link to="/done" activeClassName="selected">Done</Link></li>
                     <li><Link to="/about" activeClassName="selected">About</Link></li>
-                    <li><a href="#" onClick={this.logout} className="invalidateHref" activeClassName="selected">Logout</a></li>
+                    <li><a href="#" onClick={this.logout} activeClassName="selected">Logout</a></li>
                   </ul>
                 </div>
               </div>

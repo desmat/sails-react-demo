@@ -8,7 +8,7 @@
 module.exports = {
 
   login: function (req, res) {
-    //console.log('api controller login');
+    // console.log('api controller login');
 
     if (!req.hasOwnProperty('body') || !req.body.hasOwnProperty('username') || 
         !req.body.hasOwnProperty('password') || !req.body.username || !req.body.password) {

@@ -32,6 +32,8 @@ module.exports.policies = {
   'done': ['sessionAuth', 'addUserIdRequestParam'], //component
 
   'about': true,    //no login required
+  'login': true,    //no login required
+  'register': true, //no login required
 
   'user': false,    //no access to user end-point (TODO allow admin type user)
 

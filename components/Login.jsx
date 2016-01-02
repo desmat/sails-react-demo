@@ -9,15 +9,10 @@ const Login = React.createClass({
   login() {    
     //$("form")[0].submit();
 
-    Api.post('login', {username: this.state.data.username, password: this.state.data.password}, function(data) {
-      if (data.hasOwnProperty('login') && data.login == 'ok') {
-        window.__ReactNavAuthenticationChanged(true);
-        window.__ReactNavigate('/');
-      }
-      else {
-        var msg = data.hasOwnProperty('error') ? data.error : '(unknown)';
-        alert("Unable to login: " + msg);
-      }
+    Api.login(this.state.data.username, this.state.data.password, function() {
+      Api.navigate('/');
+    }, function(error) {
+      alert("Unable to login: " + error);
     });
   },
 

@@ -8,16 +8,10 @@ const Register = React.createClass({
   register() {    
     //$("form")[0].submit();
 
-    Api.post('register', {username: this.state.data.username, password: this.state.data.password}, function(data) {
-      //console.dir(data);
-      if (data.hasOwnProperty('register') && data.register == 'ok') {
-        window.__ReactNavAuthenticationChanged(true);
-        window.__ReactNavigate('/');
-      }
-      else {
-        var msg = data.hasOwnProperty('error') ? data.error : '(unknown)';
-        alert("Unable to register: " + msg);
-      }
+    Api.register(this.state.data.username, this.state.data.password, function() {
+      Api.navigate('/');
+    }, function(error) {
+      alert("Unable to register: " + error);
     });
   },
 
@@ -38,7 +32,7 @@ const Register = React.createClass({
   componentDidMount() {
     return {data: {username: '', password: ''}};
   },
-  
+
   render() {
     return (
       <form action="/login/register" method="post">
