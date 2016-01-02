@@ -6,9 +6,19 @@ var $ = require('jquery');
 
 const Login = React.createClass({
 
-  login() {
-    // TODO move to Api.js
-    $("form")[0].submit();
+  login() {    
+    //$("form")[0].submit();
+
+    Api.post('login', {username: this.state.data.username, password: this.state.data.password}, function(data) {
+      if (data.hasOwnProperty('login') && data.login == 'ok') {
+        window.__ReactNavAuthenticationChanged(true);
+        window.__ReactNavigate('/');
+      }
+      else {
+        var msg = data.hasOwnProperty('error') ? data.error : '(unknown)';
+        alert("Unable to login: " + msg);
+      }
+    });
   },
 
   setDemoUserCredentials1() {
@@ -21,14 +31,25 @@ const Login = React.createClass({
     this.state.data.username="Demo" + num;
     this.state.data.password="Password1";
     this.setState({data: this.state.data});
+    this.login();
+  },
+
+  usernameChanged(e) {
+    this.state.data.username=e.target.value;
+    this.setState({data: this.state.data});
+  },
+
+  passwordChanged(e) {
+    this.state.data.password=e.target.value;
+    this.setState({data: this.state.data});
   },
 
   getInitialState() {
-    return {authenticated: Api.isAuthenticated(), data: {username: '', password: ''}};
+    return {data: {username: '', password: ''}};
   },  
 
   componentDidMount() {
-    return {authenticated: this.state.authenticated, data: {username: '', password: ''}};
+    return {data: {username: '', password: ''}};
   },
 
   render() {
@@ -37,11 +58,11 @@ const Login = React.createClass({
         <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input name="username" className="form-control" type="text" placeholder="Email address" value={this.state.data.username}/>
+            <input name="username" className="form-control" type="text" placeholder="Email address" value={this.state.data.username} onChange={this.usernameChanged}/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-            <input name="password" className="form-control" type="password" placeholder="Password" value={this.state.data.password}/>
+            <input name="password" className="form-control" type="password" placeholder="Password" value={this.state.data.password} onChange={this.passwordChanged}/>
           </div>
         </div>
 

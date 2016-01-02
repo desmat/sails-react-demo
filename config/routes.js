@@ -47,8 +47,5 @@ module.exports.routes = {
   ***************************************************************************/
 
   // 'get /': 'IndexController.index',
-  // 'get /api/todo': 'TodoController.index'
-
-  'get /api/logout': 'LoginController.logout'
 
 };

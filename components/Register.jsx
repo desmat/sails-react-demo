@@ -4,22 +4,52 @@ var Link = require('react-router').Link;
 var Api = require('../assets/js/Api');
 
 const Register = React.createClass({
-  register() {
-    // TODO move to Api.js
-    $("form")[0].submit();
+
+  register() {    
+    //$("form")[0].submit();
+
+    Api.post('register', {username: this.state.data.username, password: this.state.data.password}, function(data) {
+      //console.dir(data);
+      if (data.hasOwnProperty('register') && data.register == 'ok') {
+        window.__ReactNavAuthenticationChanged(true);
+        window.__ReactNavigate('/');
+      }
+      else {
+        var msg = data.hasOwnProperty('error') ? data.error : '(unknown)';
+        alert("Unable to register: " + msg);
+      }
+    });
   },
 
+  usernameChanged(e) {
+    this.state.data.username=e.target.value;
+    this.setState({data: this.state.data});
+  },
+
+  passwordChanged(e) {
+    this.state.data.password=e.target.value;
+    this.setState({data: this.state.data});
+  },
+
+  getInitialState() {
+    return {data: {username: '', password: ''}};
+  },  
+
+  componentDidMount() {
+    return {data: {username: '', password: ''}};
+  },
+  
   render() {
     return (
       <form action="/login/register" method="post">
         <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input name="username" className="form-control" type="text" placeholder="Email address"/>
+            <input name="username" className="form-control" type="text" placeholder="Email address" onChange={this.usernameChanged}/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-            <input name="password" className="form-control" type="password" placeholder="Password"/>
+            <input name="password" className="form-control" type="password" placeholder="Password" onChange={this.passwordChanged}/>
           </div>
         </div>
 
