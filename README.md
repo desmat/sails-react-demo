@@ -37,16 +37,16 @@ Basic isomorphism:
 ```
 sails generate api Foo
 ```
-* Associate the route with the api end-point(s) via the attribute 'data'
+* Associate the route with the api end-point(s) via the attribute `data`
 ```
 <Route path="/foo" component={Foo} data="foo"/>
   <Route path="/bar" component={Bar} data="bar?a=b"/>
   <Route path="/secured" component={Secured} data="secured?userId=:userId"/>
 </Route>	
 ```
-**Note that the 'data' attribute supports queries including the special query 'userId=:userId'**
+**Note that the `data` attribute supports queries including the special query `'userId=:userId'` used to secure data behind a credential wall.**
 
-* Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
+* Implement the component's getInitialState and componentDidMount by pulling data from `Api.getInitial` and `Api.get` respectively
 ```
 ...
 getInitialState() {
@@ -67,7 +67,7 @@ That's it!
 
 ### But HOW?!!
 
-By leveraging React's renderToString method and the React router, plus a few hacks.
+By leveraging React's `renderToString` method and the React router, plus a few hacks.
 
 Painful details here:
 * https://github.com/desmat/sails-react-demo/blob/master/components/utils/ServerSideRenderer.jsx
