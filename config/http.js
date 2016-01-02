@@ -8,18 +8,11 @@
  * For more information on configuration, check out:
  * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
  */
-
-require("node-jsx").install({extension: ".jsx"});
-
+require("node-jsx").install({extension: ".jsx"}); //required for ServerSideRenderer
 var _ = require('underscore');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ReactDOMServer = require('react-dom/server') ;
-var Router = require("react-router");
-var routes = require("../components/Routes");
-var nodePackage = require('./../package');
-var createLocation = require('history/lib/createLocation');
 var ServerSideRenderer = require('../components/utils/ServerSideRenderer.jsx');
+var Utils = require('../assets/js/Utils');
+var reactRoutes = Utils.readReactRoutes(require('../components/Routes.jsx'));
 
 module.exports.http = {
 
@@ -46,14 +39,14 @@ module.exports.http = {
       'startRequestTimer',
       'cookieParser',
       'session',
-      'myRequestLogger',
-      'reactRenderer',
+      //'myRequestLogger',
       'bodyParser',
       'handleBodyParserError',
       'compress',
       'methodOverride',
       'poweredBy',
       '$custom',
+      'reactRenderer',
       'router',
       'www',
       'favicon',
@@ -78,9 +71,64 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-    reactRenderer: function (req, res, next) {
-      ServerSideRenderer(req, res, next);
-    },
+  reactRenderer: function (req, res, next) {
+    // console.log('http: reactRenderer: path=' + req.path);
+
+    // first make sure path matches a path in the react routes
+    if (Utils.matchReactRoute(req.path, reactRoutes)) {
+
+      // if so see if we match any policies
+      var matchedPolicies = Utils.matchPolicies(req.path, sails.config.policies);
+      if (matchedPolicies.length > 0) {
+        //default granted unless otherwise specified
+        var granted = true;
+
+        //if any policy is 'true' then we can ignore the rest
+        if (matchedPolicies.indexOf(true) < 0) {
+          for (var i = 0; i < matchedPolicies.length; i++) {
+            var policy = matchedPolicies[i];
+            //console.log('policy: ' + policy);
+
+            if (typeof(policy) == 'boolean') {
+              granted = policy;
+            }
+            else if (typeof(policy) == 'string') {
+              //console.log('TODO: apply policy [' + policy + ']');
+              var nextCalled = false;
+              var ret = require('../api/policies/' + policy)(req, res, function() {
+                nextCalled = true; //this seems flaky to me...
+              });
+
+              // policy's callback not called and so we assume it failed and already rendered a response
+              if (!nextCalled) return ret;
+            }
+            else {
+              sails.log.warn('Warning: unknown policy datatype: ' + policy + ' (' + typeof(policy) + ')');
+            }
+          }
+        }
+
+        // we hit a global 'false' policy and we we must render 403 response ourselves
+        if (!granted) {
+          //return res.send('DENIED!');
+          //return res.forbidden('You are not permitted to perform this action.');
+          return res.redirect('/login?error=forbidden');
+          //forbiddenResponse(req, res, 'Access Denied');
+          //res.status(403);
+          //res.send("<html><body>Access Denied</br></br><a href='/login'>Go to Login</a></body></html>");
+          // req.path = '/login';
+          // ServerSideRenderer(req, res, next);
+          // return;          
+        }
+      }
+
+      // so far so good let's render the react component
+      ServerSideRenderer(req, res, next);      
+    }
+    else {
+      next();
+    }
+  },
 
 
   /***************************************************************************

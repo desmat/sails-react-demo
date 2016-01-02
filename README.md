@@ -29,29 +29,32 @@ Added benefits: simple urls, potentially cacheable server-side responses, better
 Basic isomorphism: 
 
 * Create your React components normally
-* Define your React Routes normally
+* Define your React routes normally
 
-<strong>At this point the static parts of your components will render on the back-end automatically.</strong> The next steps will allow you to fully render data-driven components isomorphically:
+**At this point the static parts of your components will render on the back-end automatically.** The next steps will allow you to fully render data-driven components isomorphically:
 
 * Define restful api end-points corresponding to the component
 ```
 sails generate api Foo
 ```
-* Associate the route with the api end-point(s) via the attribute 'model'
+* Associate the route with the api end-point(s) via the attribute `data`
 ```
-<Route path="/foo" component={Foo} model="Foo"/>
-	<Route path="/bar" component={Bar} model="Bar"/>
+<Route path="/foo" component={Foo} data="foo"/>
+  <Route path="/bar" component={Bar} data="bar?a=b"/>
+  <Route path="/secured" component={Secured} data="secured?userId=:userId"/>
 </Route>	
 ```
-* Implement the component's getInitialState and componentDidMount by pulling data from Api.getInitial and Api.get respectively
+**Note that the `data` attribute supports queries including the special query `'userId=:userId'` used to secure data behind a login wall**
+
+* Implement the component's getInitialState and componentDidMount by pulling data from `Api.getInitial` and `Api.get` respectively
 ```
 ...
 getInitialState() {
-	return {data: Api.getInitial('Foo')};
+	return {data: Api.getInitial('foo')};
 },  
 
 componentDidMount() {
-	Api.get('Foo', function(data) { 
+	Api.get('foo', function(data) { 
 		/* update front-end state */
 	});
 },
@@ -64,7 +67,7 @@ That's it!
 
 ### But HOW?!!
 
-By leveraging React's renderToString method and the React router, plus a few hacks.
+By leveraging React's `renderToString` method and the React router, plus a few hacks.
 
 Painful details here:
 * https://github.com/desmat/sails-react-demo/blob/master/components/utils/ServerSideRenderer.jsx
@@ -74,9 +77,8 @@ Painful details here:
 
 ### What's Next/Limitations
 
-* Authentication
-* More complex data end-point support
+* Ability to overwrite end-point implementations via ApiController and consistent use of end-point logic in ServerSideRenderer via sails.router.route()
 
 ### Notes
 
-* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804 then `sails debug`
+* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804, `sails debug` in a command-line, 'node-inspector' in another, open http://127.0.0.1:1337/ in a Chrome tab and http://127.0.0.1:8080/debug?port=5858 in another.
