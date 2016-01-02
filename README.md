@@ -29,9 +29,9 @@ Added benefits: simple urls, potentially cacheable server-side responses, better
 Basic isomorphism: 
 
 * Create your React components normally
-* Define your React Routes normally
+* Define your React routes normally
 
-<strong>At this point the static parts of your components will render on the back-end automatically.</strong> The next steps will allow you to fully render data-driven components isomorphically:
+**At this point the static parts of your components will render on the back-end automatically.** The next steps will allow you to fully render data-driven components isomorphically:
 
 * Define restful api end-points corresponding to the component
 ```
