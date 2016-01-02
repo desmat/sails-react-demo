@@ -44,7 +44,7 @@ sails generate api Foo
   <Route path="/secured" component={Secured} data="secured?userId=:userId"/>
 </Route>	
 ```
-**Note that the `data` attribute supports queries including the special query `'userId=:userId'` used to secure data behind a credential wall.**
+**Note that the `data` attribute supports queries including the special query `'userId=:userId'` used to secure data behind a login wall**
 
 * Implement the component's getInitialState and componentDidMount by pulling data from `Api.getInitial` and `Api.get` respectively
 ```
