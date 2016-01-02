@@ -81,4 +81,4 @@ Painful details here:
 
 ### Notes
 
-* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804, `sails debug` in a cmd-line, 'node-inspector' in another, open http://localhost:1337/ in a Chrome tab and http://localhost:8080/debug?port=5858 in another.
+* To enable node debugging: http://stackoverflow.com/questions/29692155/sails-debug-command-not-working-in-sails-js#33509804, `sails debug` in a command-line, 'node-inspector' in another, open http://127.0.0.1:1337/ in a Chrome tab and http://127.0.0.1:8080/debug?port=5858 in another.
