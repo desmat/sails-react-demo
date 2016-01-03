@@ -27,3 +27,7 @@ a.selected {
 	padding-left: 15px;
 	padding-right: 15px;
 }
+
+.input-group {
+  margin-bottom: 3px;
+}
