@@ -57,9 +57,10 @@ const Api = {
 
   logout(onSuccess, onError) {
     //bit of a hack i know
+    window.__ReactInitState__ = {};
     window.__ReactNavAuthenticationChanged(false);
 
-    Api.get('logout', function() {
+    Api.post('logout', function() {
       if (onSuccess) onSuccess();
     }, function(error) {
       if (onError) onError();

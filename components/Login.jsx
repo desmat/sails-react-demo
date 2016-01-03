@@ -7,13 +7,19 @@ var $ = require('jquery');
 const Login = React.createClass({
 
   login() {    
-    //$("form")[0].submit();
+    var self = this;
 
     Api.login(this.state.data.username, this.state.data.password, function() {
       Api.navigate('/');
     }, function(error) {
-      alert("Unable to login: " + error);
+      //alert("Unable to login: " + error);
+      self.state.data.errorMessage = "Unable to login: " + error;
+      self.setState({data: self.state.data});
     });
+  },
+
+  keyDown(e) {
+    if (e.keyCode == 13) this.login();
   },
 
   setDemoUserCredentials1() {
@@ -30,30 +36,34 @@ const Login = React.createClass({
   },
 
   usernameChanged(e) {
+    this.state.data.errorMessage = '';
     this.state.data.username=e.target.value;
     this.setState({data: this.state.data});
   },
 
   passwordChanged(e) {
+    this.state.data.errorMessage = '';
     this.state.data.password=e.target.value;
     this.setState({data: this.state.data});
   },
 
   getInitialState() {
-    return {data: {username: '', password: ''}};
+    return {data: {username: '', password: '', errorMessage: ''}};
   },  
 
   componentDidMount() {
-    return {data: {username: '', password: ''}};
+    return {data: {username: '', password: '', errorMessage: ''}};
   },
 
   render() {
     return (
-      <form action="/login/login" method="post">
+      <div onKeyDown={this.keyDown}>
+        <p className="text-left text-danger">{this.state.data.errorMessage}</p>
+
         <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input name="username" className="form-control" type="text" placeholder="Email address" value={this.state.data.username} onChange={this.usernameChanged}/>
+            <input name="username" className="form-control" autoFocus="true" type="text" placeholder="Email address" value={this.state.data.username} onChange={this.usernameChanged}/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
@@ -75,7 +85,7 @@ const Login = React.createClass({
         </p>
 
         <p className="text-center">Don't have an account? <Link to="register">Register</Link></p>
-      </form>
+      </div>
     )
   }
 });

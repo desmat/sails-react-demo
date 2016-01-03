@@ -13,7 +13,7 @@ var Nav = React.createClass({
     Api.navigate('/login');
 
     //logout backend
-    Api.get('logout');
+    Api.logout();
   },
 
   authenticationChanged(authenticated) {

@@ -6,13 +6,19 @@ var Api = require('../assets/js/Api');
 const Register = React.createClass({
 
   register() {    
-    //$("form")[0].submit();
+    var self = this;
 
     Api.register(this.state.data.username, this.state.data.password, function() {
       Api.navigate('/');
     }, function(error) {
-      alert("Unable to register: " + error);
+      //alert("Unable to register: " + error);
+      self.state.data.errorMessage = "Unable to register: " + error;
+      self.setState({data: self.state.data});
     });
+  },
+
+  keyDown(e) {
+    if (e.keyCode == 13) this.register();
   },
 
   usernameChanged(e) {
@@ -26,20 +32,22 @@ const Register = React.createClass({
   },
 
   getInitialState() {
-    return {data: {username: '', password: ''}};
+    return {data: {username: '', password: '', errorMessage: ''}};
   },  
 
   componentDidMount() {
-    return {data: {username: '', password: ''}};
+    return {data: {username: '', password: '', errorMessage: ''}};
   },
 
   render() {
     return (
-      <form action="/login/register" method="post">
+      <div onKeyDown={this.keyDown}>
+        <p className="text-left text-danger">{this.state.data.errorMessage}</p>
+
         <div>
           <div className="input-group margin-bottom-sm">
             <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
-            <input name="username" className="form-control" type="text" placeholder="Email address" onChange={this.usernameChanged}/>
+            <input name="username" className="form-control" autoFocus="true" type="text" placeholder="Email address" onChange={this.usernameChanged}/>
           </div>
           <div className="input-group">
             <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
@@ -56,7 +64,7 @@ const Register = React.createClass({
         </p>
 
         <p className="text-center">Already have an account? <Link to="login">Login</Link></p>
-      </form>
+      </div>
     )
   }
 });
