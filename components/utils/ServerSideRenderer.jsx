@@ -56,7 +56,7 @@ var serve = function(req, res, next) {
               _.filter(
                 renderProps.routes, 
                 function(i) { return i.hasOwnProperty('data'); }), 
-              function(i) { if (i.data.indexOf(',')) { return _.map(i.data.split(','), function(i) { return i.trim() }); } else { return i.model; } })));
+              function(i) { if (i.data.indexOf(',')) { return _.map(i.data.split(' '), function(i) { return i.trim() }); } else { return i.model; } })));
       // console.log('datae');
       // console.dir(datae);
 
