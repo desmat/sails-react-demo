@@ -1,10 +1,10 @@
-var _ = require('underscore');
-var $ = require('jquery');
+var _ = require('lodash');
 var React = require("react");
 var Api = require('../assets/js/Api');
+var App = require('../assets/js/App');
 var TodoItem = require('./TodoItem.jsx');
 
-const TodoList = React.createClass({
+module.exports = React.createClass({
   addTodoItem() {
     var self = this;
     var text = window.prompt("New Item To Do","The thing that I need to do");
@@ -59,6 +59,20 @@ const TodoList = React.createClass({
     }
   },
 
+  fetchData() {
+    var self = this;
+    var url = 'todo' + ((typeof self.props.state !== 'undefined') ? '?state=' + self.props.state : '');
+
+    Api.get(url, function(data) { 
+      self.setState({data: data}); 
+    }, function(errorCode) {
+      if (errorCode == 403) {
+        App.logout();
+        App.navigate('/login');
+      }
+    });
+  },
+
   getInitialState() {
     var url = 'todo' + ((typeof this.props.state !== 'undefined') ? '?state=' + this.props.state : '');
 
@@ -67,25 +81,12 @@ const TodoList = React.createClass({
 
   componentDidMount() {
     var self = this;
-    var fetchData = function() {
-      var url = 'todo' + ((typeof self.props.state !== 'undefined') ? '?state=' + self.props.state : '');
-
-      Api.get(url, function(data) { 
-        self.setState({data: data}); 
-      }, function(errorCode) {
-        if (errorCode == 403) {
-          Api.logout();
-          Api.navigate('/login');
-        }
-      });
-    };
-
     io.socket.on('todo', function (msg) {
       //quick and dirty for now
-      fetchData();
+      self.fetchData();
     });
 
-   fetchData();
+   self.fetchData();
   },
 
   render() {
@@ -154,5 +155,3 @@ const TodoList = React.createClass({
     }
   }
 });
-
-module.exports = TodoList;

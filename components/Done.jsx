@@ -1,7 +1,7 @@
 var React = require("react");
 var TodoList = require('./TodoList.jsx');
 
-const Done = React.createClass({
+module.exports = React.createClass({
   render() {
     return (
       <div>
@@ -10,5 +10,3 @@ const Done = React.createClass({
     )
   }
 });
-
-module.exports = Done;

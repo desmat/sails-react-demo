@@ -11,7 +11,7 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
  * Supports queries (Foo?bar=car) and record-specific path (Foo/123).
  * Note: for user-specific data, use query param userId=:userId where userId is a field on said data
  */
-const routes = (
+module.exports = (
     <Route path="/" component={require("./Body.jsx")}  >
       <IndexRoute component={require("./Todo.jsx")} data="todo?state=todo&userId=:userId"/>
       <Route path="done" component={require("./Done.jsx")} data="todo?state=done&userId=:userId"/>
@@ -19,6 +19,4 @@ const routes = (
       <Route path="login" component={require("./Login.jsx")} />
       <Route path="register" component={require("./Register.jsx")} />
     </Route>
-)
-
-module.exports = routes;
+);

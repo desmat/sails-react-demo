@@ -1,8 +1,8 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var React = require("react");
 var Api = require('../assets/js/Api');
 
-const About = React.createClass({
+module.exports = React.createClass({
   getInitialState() {
     return {data: Api.getInitial('about')};
   },  
@@ -35,5 +35,3 @@ const About = React.createClass({
     )
   }
 });
-
-module.exports = About;

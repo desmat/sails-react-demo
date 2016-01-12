@@ -7,7 +7,7 @@
 
 module.exports = {
 
-  login: function (req, res) {
+  login(req, res) {
     // console.log('api controller login');
 
     if (!req.hasOwnProperty('body') || !req.body.hasOwnProperty('username') || 
@@ -32,7 +32,7 @@ module.exports = {
     });
   }, 
 
-  register: function (req, res) {
+  register(req, res) {
     //console.log('api controller register');
 
     if (!req.hasOwnProperty('body') || !req.body.hasOwnProperty('username') || 
@@ -70,7 +70,7 @@ module.exports = {
     });
   },  
 
-  logout: function (req, res) {
+  logout(req, res) {
     //console.log('api controller logout');
 
     delete req.session.authenticated;    

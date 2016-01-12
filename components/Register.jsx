@@ -1,15 +1,15 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var React = require("react");
 var Link = require('react-router').Link;
-var Api = require('../assets/js/Api');
+var App = require('../assets/js/App');
 
-const Register = React.createClass({
+module.exports = React.createClass({
 
   register() {    
     var self = this;
 
-    Api.register(this.state.data.username, this.state.data.password, function() {
-      Api.navigate('/');
+    App.register(this.state.data.username, this.state.data.password, function() {
+      App.navigate('/');
     }, function(error) {
       //alert("Unable to register: " + error);
       self.state.data.errorMessage = "Unable to register: " + error;
@@ -68,5 +68,3 @@ const Register = React.createClass({
     )
   }
 });
-
-module.exports = Register;

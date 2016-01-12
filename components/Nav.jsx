@@ -3,17 +3,18 @@ var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var IndexLink = ReactRouter.IndexLink;
 var Api = require('../assets/js/Api');
+var App = require('../assets/js/App');
 var $ = require('jquery');
 
-var Nav = React.createClass({
+module.exports = React.createClass({
 
   logout() {
     //do front-end first to make it seem snappy
     this.authenticationChanged(false);
-    Api.navigate('/login');
+    App.navigate('/login');
 
     //logout backend
-    Api.logout();
+    App.logout();
   },
 
   authenticationChanged(authenticated) {
@@ -24,16 +25,13 @@ var Nav = React.createClass({
   },
 
   getInitialState() {
-    return {authenticated: Api.isAuthenticated()};
+    return {authenticated: App.isAuthenticated()};
   },  
 
   componentDidMount() {
-    //super hack! I need to figure out how to not use global scope to pass along callbacks in this manner...
-    if (typeof window !== 'undefined') {
-      window.__ReactNavAuthenticationChanged = this.authenticationChanged;
-    }
+    App.registerAuthenticatedChanged(this.authenticationChanged);
 
-    return {authenticated: Api.isAuthenticated()};
+    return {authenticated: App.isAuthenticated()};
   },
 
   render: function() {
@@ -92,5 +90,3 @@ var Nav = React.createClass({
     }
   }
 });
-
-module.exports = Nav;

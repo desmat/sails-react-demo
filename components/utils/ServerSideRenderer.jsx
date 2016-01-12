@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactDOMServer = require('react-dom/server') ;
@@ -61,7 +61,7 @@ var renderHtml = function(req, res, renderProps, modelsAndData, title, descripti
  * 1. Support user-specific data
  *
  */
-var serve = function(req, res, next) {
+module.exports = function(req, res, next) {
   // console.log("Rendering " + req.originalUrl);
 
   var location = createLocation(req.originalUrl);
@@ -225,5 +225,3 @@ var serve = function(req, res, next) {
     }
   });
 };
-
-module.exports = serve;
