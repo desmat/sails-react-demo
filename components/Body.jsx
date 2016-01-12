@@ -1,9 +1,10 @@
 var React = require("react");
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
+var App = require('../assets/js/App');
 var Nav = require('./Nav.jsx');
 
-var Body = React.createClass({
+module.exports = React.createClass({
   navigate(url) {
     window.X = this.props;
     this.props.history.push(url);
@@ -11,9 +12,7 @@ var Body = React.createClass({
 
   componentDidMount() {
     //super hack!
-    if (typeof window !== 'undefined') {
-      window.__ReactNavigate = this.navigate;
-    }
+    App.registerNavigate(this.navigate);
 
     return {};
   },
@@ -31,5 +30,3 @@ var Body = React.createClass({
     );
   }
 });
-
-module.exports = Body;

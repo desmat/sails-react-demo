@@ -1,16 +1,16 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var React = require("react");
 var Link = require('react-router').Link;
-var Api = require('../assets/js/Api');
+var App = require('../assets/js/App');
 var $ = require('jquery');
 
-const Login = React.createClass({
+module.exports = React.createClass({
 
   login() {    
     var self = this;
 
-    Api.login(this.state.data.username, this.state.data.password, function() {
-      Api.navigate('/');
+    App.login(this.state.data.username, this.state.data.password, function() {
+      App.navigate('/');
     }, function(error) {
       //alert("Unable to login: " + error);
       self.state.data.errorMessage = "Unable to login: " + error;
@@ -89,5 +89,3 @@ const Login = React.createClass({
     )
   }
 });
-
-module.exports = Login;

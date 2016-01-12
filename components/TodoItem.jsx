@@ -1,6 +1,6 @@
 var React = require("react");
 
-const TodoItem = React.createClass({
+module.exports = React.createClass({
   setDone() {
     this.props.setState(this.props.id, 'done');
   },
@@ -46,5 +46,3 @@ const TodoItem = React.createClass({
     // }
   }
 });
-
-module.exports = TodoItem;

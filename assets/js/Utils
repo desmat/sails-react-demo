@@ -1,6 +1,6 @@
-var _ = require('underscore');
+var _ = require('lodash');
 
-const Utils = {
+module.exports = {
 
   //recursively read react router definition and extract routes to be matched later
   readReactRoutes(component) {
@@ -133,6 +133,4 @@ const Utils = {
     return _.flatten(matches);;
   },
 
-}
-
-module.exports = Utils;
+};

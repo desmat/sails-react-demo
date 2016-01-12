@@ -6,12 +6,12 @@
  */
 
 module.exports = {
-	index: function (req, res) {
+	index(req, res) {
 		console.log('index controller default');
 		return res.send("<html><body>index controller response</br></br><a href='foo'>go foo</a></body></html>");
   },
 
-  user: function (req, res) {
+  user(req, res) {
 		console.log('index controller user');
 		return res.send("<html><body>index controller user response</br></br><a href='foo'>go foo</a></body></html>");
   }

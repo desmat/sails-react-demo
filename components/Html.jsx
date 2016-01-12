@@ -2,7 +2,7 @@ var React = require("react");
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 
-var Html = React.createClass({
+module.exports = React.createClass({
   render: function() {
     return (
       <html>
@@ -30,5 +30,3 @@ var Html = React.createClass({
     );
   }
 });
-
-module.exports = Html;
